@@ -1,10 +1,12 @@
 # Obesity in the US
 A heavy topic
+
 ##Team
 - Tolani Afolabi
 - Benjamin Nelson
 - Frederik De Bruyker
 - Joy Etuks
+
 ##Technical Basics
 - Python Flask–powered RESTful API, HTML/CSS, JavaScript, and a  database
 - Track: 
@@ -14,6 +16,7 @@ A heavy topic
 - Dataset: multiple smaller data set (as on state level) will make for a multiple of 50 records
 - User-driven interaction: per Output (see slide)
 - Views: 3 or more
+
 ## Dataset
 - Base obesity dataset (API call preferred, download optional) https://catalog.data.gov/dataset?res_format=GeoJSON
 - Any dataset that can be found on state level to compare in:
@@ -24,6 +27,7 @@ A heavy topic
     - ...
 - Current articles on obesity google scraping
 - Feedback form and reporting (stored in database)
+
 ## Output
 - Overview 
     - Leaflet presentation with state shape identification with gradient by obesity level
