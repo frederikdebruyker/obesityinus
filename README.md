@@ -1,13 +1,13 @@
 # Obesity in the US
 A heavy topic
 
-##Team
+## Team
 - Tolani Afolabi
 - Benjamin Nelson
 - Frederik De Bruyker
 - Joy Etuks
 
-##Technical Basics
+## Technical Basics
 - Python Flask–powered RESTful API, HTML/CSS, JavaScript, and a  database
 - Track: 
     - A combination of web scraping and Leaflet or Plotly
