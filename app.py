@@ -87,6 +87,12 @@ class Info(db.Model):
     excercise = db.Column(db.String(6))
     overall_wellbeing = db.Column(db.String(6))
 
+class Trade(db.Model):
+    id = db.Column(db.String(25), primary_key=True, nullable=False)
+    animals_us_millions = db.Column(db.String(10))
+    dairy_us_millions = db.Column(db.String(10))
+    agriculture_us_millions = db.Column(db.String(10))
+
 # Linking/creating the database
 db.create_all()
 
@@ -106,6 +112,10 @@ def create_compilation(dic):
 def home():
     return render_template("index.html")
 
+@app.route("/map")
+def mapZoom():
+    return render_template("map.html")
+
 @app.route("/happinessScrape")
 def happinessIndex():
     # Getting the happiness info
@@ -117,7 +127,7 @@ def happinessIndex():
     # This brings up the data we want on the page, but waits until the website
     # inserts the relevant data so it doesn't fail
     # Times out every .5 seconds
-    browser.is_element_present_by_css(".dataTable",wait_time=.5)
+    browser.is_element_present_by_css(".dataTable",wait_time=2)
     browser.find_by_id("dataTab").first.click()
     # Gets the html of the page open, and reads it to a dataframe
     # Can't just read html of url with read_table cause java inserts data after click
@@ -307,6 +317,33 @@ def happinessIndex():
                 age_65_obesity = state_info["AGEYR65PLUS"][0],\
                 age_65_count = state_info["AGEYR65PLUS"][1]))
             db.session.commit()
+    # Reads in the excel file once, so it doesn't have to do so repeatedly
+    excel_file = pd.ExcelFile(os.path.join("db","state_detail_by_commodity_cy.xlsx"))
+    # Gets the sheets in the file
+    sheets = excel_file.sheet_names[:50]
+    # Tests if the data already exists
+    # If there are missing records, recreates the table
+    tester = db.session.query(Trade).all()
+    if len(tester) == 0:
+        for sheet in sheets:
+            df = excel_file.parse(sheet)
+            most_recent = list(df.columns)[len(list(df.columns))-1]
+            db.session.add(Trade(
+                id = df["U.S. agricultural exports, State detail by commodity [New series]: calendar years 2000-2017"][0],\
+                animals_us_millions = str(round((df[most_recent][30]-df[most_recent][5]-df[most_recent][7]),4)),\
+                dairy_us_millions = str(round(df[most_recent][7],4)),\
+                agriculture_us_millions = str(round((df[most_recent][31]-df[most_recent][24]-df[most_recent][25]),4))
+            ))
+            db.session.commit()
+        df = excel_file.parse("US")
+        most_recent = list(df.columns)[len(list(df.columns))-1]
+        db.session.add(Trade(
+            id = "National",\
+            animals_us_millions = str(round((df[most_recent][30]-df[most_recent][5]-df[most_recent][7]),4)),\
+            dairy_us_millions = str(round(df[most_recent][7],4)),\
+            agriculture_us_millions = str(round((df[most_recent][31]-df[most_recent][24]-df[most_recent][25]),4))
+        ))
+        db.session.commit()
     #Redirects to home page, index.html
     return redirect(location = url_for("home"), code=302)
 
@@ -316,12 +353,17 @@ def happinessData(state="All"):
     # Queries all records for one state or all states
     if state == "All":
         records = Info.query.join(Stratifications, Info.id==Stratifications.id).\
+            join(Trade,Info.id==Trade.id).\
             add_entity(Stratifications).\
-            filter(Info.id==Stratifications.id).all()
+            add_entity(Trade).\
+            filter(Info.id==Stratifications.id).\
+            filter(Info.id==Trade.id).all()
     else:
         records = Info.query.join(Stratifications, Info.id==Stratifications.id).\
             add_entity(Stratifications).\
+            add_entity(Trade).\
             filter(Info.id==Stratifications.id).\
+            filter(Info.id==Trade.id).\
             filter(Info.id==state).all()
     # Creates a list of json objects, one for each state.
     # If only one state is created, a list of size one is created.
@@ -329,7 +371,7 @@ def happinessData(state="All"):
     jsonList = []
     dout = {}
     for document in records:
-        dout = {**document[0].__dict__,**document[1].__dict__}
+        dout = {**document[0].__dict__,**document[1].__dict__,**document[2].__dict__}
         dout.pop("_sa_instance_state")
         jsonList.append(dout.copy())
     return jsonify(jsonList)
