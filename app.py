@@ -5,9 +5,103 @@ import pandas as pd
 from json import dump, load, loads
 from requests import get
 import os
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 
+# Database setup
+app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///db/stateData.sqlite"
+# Sets to False to improve performance, and because we don't need what it enables
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
+db = SQLAlchemy(app)
+
+# Setting up tables
+class Stratifications(db.Model):
+    id = db.Column(db.String(25), primary_key=True, nullable=False)
+    abbr = db.Column(db.String(3))
+    total_obesity = db.Column(db.String(6))
+    total_count = db.Column(db.String(6))
+    multi_racial_obesity = db.Column(db.String(6))
+    multi_racial_count = db.Column(db.String(6))
+    asian_obesity = db.Column(db.String(6))
+    asian_count = db.Column(db.String(6))
+    nonhispanic_black_obesity = db.Column(db.String(6))
+    nonhispanic_black_count = db.Column(db.String(6))
+    hispanic_obesity = db.Column(db.String(6))
+    hispanic_count = db.Column(db.String(6))
+    hawaiian_pacific_islander_obesity = db.Column(db.String(6))
+    hawaiian_pacific_islander_count = db.Column(db.String(6))
+    american_indian_alaska_native_obesity = db.Column(db.String(6))
+    american_indian_alaska_native_count = db.Column(db.String(6))
+    other_race_obesity = db.Column(db.String(6))
+    other_race_count = db.Column(db.String(6))
+    nonhispanic_white_obesity = db.Column(db.String(6))
+    nonhispanic_white_count = db.Column(db.String(6))
+    us_15_25_k_obesity = db.Column(db.String(6))
+    us_15_25_k_count = db.Column(db.String(6))
+    us_25_35_k_obesity = db.Column(db.String(6))
+    us_25_35_k_count = db.Column(db.String(6))
+    us_35_50_k_obesity = db.Column(db.String(6))
+    us_35_50_k_count = db.Column(db.String(6))
+    us_50_75_k_obesity = db.Column(db.String(6))
+    us_50_75_k_count = db.Column(db.String(6))
+    us_75_k_obesity = db.Column(db.String(6))
+    us_75_k_count = db.Column(db.String(6))
+    us_15_k_obesity = db.Column(db.String(6))
+    us_15_k_count = db.Column(db.String(6))
+    us_unreported_obesity = db.Column(db.String(6))
+    us_unreported_count = db.Column(db.String(6))
+    female_obesity = db.Column(db.String(6))
+    female_count = db.Column(db.String(6))
+    male_obesity = db.Column(db.String(6))
+    male_count = db.Column(db.String(6))
+    college_grad_obesity = db.Column(db.String(6))
+    college_grad_count = db.Column(db.String(6))
+    technical_partial_college_obesity = db.Column(db.String(6))
+    technical_partial_college_count = db.Column(db.String(6))
+    high_school_grad_obesity = db.Column(db.String(6))
+    high_school_grad_count = db.Column(db.String(6))
+    less_than_high_school_obesity = db.Column(db.String(6))
+    less_than_high_school_count = db.Column(db.String(6))
+    age_18_24_obesity = db.Column(db.String(6))
+    age_18_24_count = db.Column(db.String(6))
+    age_25_34_obesity = db.Column(db.String(6))
+    age_25_34_count = db.Column(db.String(6))
+    age_35_44_obesity = db.Column(db.String(6))
+    age_35_44_count = db.Column(db.String(6))
+    age_45_54_obesity = db.Column(db.String(6))
+    age_45_54_count = db.Column(db.String(6))
+    age_55_64_obesity = db.Column(db.String(6))
+    age_55_64_count = db.Column(db.String(6))
+    age_65_obesity = db.Column(db.String(6))
+    age_65_count = db.Column(db.String(6))
+
+class Info(db.Model):
+    id = db.Column(db.String(25), primary_key=True, nullable=False)
+    republican = db.Column(db.String(6))
+    democrat = db.Column(db.String(6))
+    strongly_religious = db.Column(db.String(6))
+    non_religious = db.Column(db.String(6))
+    produce = db.Column(db.String(6))
+    excercise = db.Column(db.String(6))
+    overall_wellbeing = db.Column(db.String(6))
+
+# Linking/creating the database
+db.create_all()
+
+# Creating function used in processing the useful data per state
+# Used in route /happinessScrape
+def create_compilation(dic):
+    if "sample_size" in dic:
+        return (dic["stratificationid1"],[dic["data_value"],dic["sample_size"]])
+    else:
+        return (dic["stratificationid1"],["not_significant","not_significant"])
+
+
+
+
+# Setting up routes
 @app.route("/")
 def home():
     return render_template("index.html")
@@ -36,33 +130,209 @@ def happinessIndex():
     # There is also an average info accessed by "National average"
     pd_table = pd_table.set_index("State")
     out_dict = pd_table.to_dict("index")
-    # Outputs the dict as a json file and redirects to home page
-    with open(os.path.join("db","happiness_and_politics.json"), "w") as outfile:
-        dump(out_dict, outfile)
+    # Sends data to the table, updating the old data in the table
+    # If the table doesn't exist yet, it creates the table data instead
+    # Proceeds only if the dictionary is valid - not yet, add check later
+    tester = db.session.query(Info).all()
+    if len(tester):
+        for document in tester:
+            # Sets dictionary key
+            key = document.id
+            if document.id == "National":
+                key = "National average"
+            # Updates the current entry with the new scraped info
+            document.republican = str(out_dict[key]['% Republican...'])
+            document.democrat = str(out_dict[key]['% Democrat/Lean'])
+            document.strongly_religious = str(out_dict[key]['% Very relig...'])
+            document.non_religious = str(out_dict[key]['% Nonreligious'])
+            document.produce = str(out_dict[key]['% Eat produc...'])
+            document.excercise = str(out_dict[key]['% Exercise f...'])
+            document.overall_wellbeing = str(out_dict[key]['Overall Well...'])
+            db.session.commit()
+    else:
+        for key in out_dict.keys():
+            id_out = key
+            if key == "National average":
+                id_out = "National"
+            db.session.add(Info(id = id_out,\
+                republican=str(out_dict[key]['% Republican...']),\
+                democrat=str(out_dict[key]['% Democrat/Lean']),\
+                strongly_religious=str(out_dict[key]['% Very relig...']),\
+                non_religious=str(out_dict[key]['% Nonreligious']),\
+                produce=str(out_dict[key]['% Eat produc...']),\
+                excercise=str(out_dict[key]['% Exercise f...']),\
+                overall_wellbeing=str(out_dict[key]['Overall Well...'])))
+            db.session.commit()
+
+    
+    # Gets json data at the obese_url url for the stratification data
+    obese_url = "https://chronicdata.cdc.gov/resource/mxg7-989n.json?$limit=2000&yearend=2017&question=Percent%20of%20adults%20aged%2018%20years%20and%20older%20who%20have%20obesity"
+    response = get(obese_url)
+    # Converts it to a list of dicts
+    # They are separated by stratification and state
+    out_dict_list = loads(response.text)
+    # Setting the list of dictionaries into the Stratifications table
+    # Making entries per state if they don't exist, updating otherwise
+    # Proceeds only if the dictionary is valid - not yet, add check later
+    # Also, aggregates the data needed to input a national avarage.
+    tester = db.session.query(Stratifications).all()
+    for key in out_dict.keys():
+        # Adjusts the state designation to correct for differences in datasets
+        # Imporoves readability in the sql database
+        id_out = key
+        if key == "National average":
+            id_out = "National"
+        # Pulls out the relevant info to make it possible to put it in database
+        state_agg = list(filter(lambda dic: dic["locationdesc"] == id_out, out_dict_list))
+        state_info = dict(list(map(lambda dic: create_compilation(dic), state_agg)))
+        # Adds info to database, creating or updating rows based off existence
+        if len(tester):
+            document = Info.query.filter_by(id=id_out).first()
+            document.id = id_out
+            document.abbr = state_agg[0]["locationabbr"]
+            document.total_obesity = state_info["OVERALL"][0]
+            document.total_count = state_info["OVERALL"][1]
+            document.multi_racial_obesity = state_info["RACE2PLUS"][0]
+            document.multi_racial_count = state_info["RACE2PLUS"][1]
+            document.asian_obesity = state_info["RACEASN"][0]
+            document.asian_count = state_info["RACEASN"][1]
+            document.nonhispanic_black_obesity = state_info["RACEBLK"][0]
+            document.nonhispanic_black_count = state_info["RACEBLK"][1]
+            document.hispanic_obesity = state_info["RACEHIS"][0]
+            document.hispanic_count = state_info["RACEHIS"][1]
+            document.hawaiian_pacific_islander_obesity = state_info["RACEHPI"][0]
+            document.hawaiian_pacific_islander_count = state_info["RACEHPI"][1]
+            document.american_indian_alaska_native_obesity = state_info["RACENAA"][0]
+            document.american_indian_alaska_native_count = state_info["RACENAA"][1]
+            document.other_race_obesity = state_info["RACEOTH"][0]
+            document.other_race_count = state_info["RACEOTH"][1]
+            document.nonhispanic_white_obesity = state_info["RACEWHT"][0]
+            document.nonhispanic_white_count = state_info["RACEWHT"][1]
+            document.us_15_25_k_obesity = state_info["INC1525"][0]
+            document.us_15_25_k_count = state_info["INC1525"][1]
+            document.us_25_35_k_obesity = state_info["INC2535"][0]
+            document.us_25_35_k_count = state_info["INC2535"][1]
+            document.us_35_50_k_obesity = state_info["INC3550"][0]
+            document.us_35_50_k_count = state_info["INC3550"][1]
+            document.us_50_75_k_obesity = state_info["INC5075"][0]
+            document.us_50_75_k_count = state_info["INC5075"][1]
+            document.us_75_k_obesity = state_info["INC75PLUS"][0]
+            document.us_75_k_count = state_info["INC75PLUS"][1]
+            document.us_15_k_obesity = state_info["INCLESS15"][0]
+            document.us_15_k_count = state_info["INCLESS15"][1]
+            document.us_unreported_obesity = state_info["INCNR"][0]
+            document.us_unreported_count = state_info["INCNR"][1]
+            document.female_obesity = state_info["FEMALE"][0]
+            document.female_count = state_info["FEMALE"][1]
+            document.male_obesity = state_info["MALE"][0]
+            document.male_count = state_info["MALE"][1]
+            document.college_grad_obesity = state_info["EDUCOGRAD"][0]
+            document.college_grad_count = state_info["EDUCOGRAD"][1]
+            document.technical_partial_college_obesity = state_info["EDUCOTEC"][0]
+            document.technical_partial_college_count = state_info["EDUCOTEC"][1]
+            document.high_school_grad_obesity = state_info["EDUHSGRAD"][0]
+            document.high_school_grad_count = state_info["EDUHSGRAD"][1]
+            document.less_than_high_school_obesity = state_info["EDUHS"][0]
+            document.less_than_high_school_count = state_info["EDUHS"][1]
+            document.age_18_24_obesity = state_info["AGEYR1824"][0]
+            document.age_18_24_count = state_info["AGEYR1824"][1]
+            document.age_25_34_obesity = state_info["AGEYR2534"][0]
+            document.age_25_34_count = state_info["AGEYR2534"][1]
+            document.age_35_44_obesity = state_info["AGEYR3544"][0]
+            document.age_35_44_count = state_info["AGEYR3544"][1]
+            document.age_45_54_obesity = state_info["AGEYR4554"][0]
+            document.age_45_54_count = state_info["AGEYR4554"][1]
+            document.age_55_64_obesity = state_info["AGEYR5564"][0]
+            document.age_55_64_count = state_info["AGEYR5564"][1]
+            document.age_65_obesity = state_info["AGEYR65PLUS"][0]
+            document.age_65_count = state_info["AGEYR65PLUS"][1]
+            db.session.commit()
+        else:
+            db.session.add(Stratifications(id = id_out,\
+                abbr = state_agg[0]["locationabbr"],\
+                total_obesity = state_info["OVERALL"][0],\
+                total_count = state_info["OVERALL"][1],\
+                multi_racial_obesity = state_info["RACE2PLUS"][0],\
+                multi_racial_count = state_info["RACE2PLUS"][1],\
+                asian_obesity = state_info["RACEASN"][0],\
+                asian_count = state_info["RACEASN"][1],\
+                nonhispanic_black_obesity = state_info["RACEBLK"][0],\
+                nonhispanic_black_count = state_info["RACEBLK"][1],\
+                hispanic_obesity = state_info["RACEHIS"][0],\
+                hispanic_count = state_info["RACEHIS"][1],\
+                hawaiian_pacific_islander_obesity = state_info["RACEHPI"][0],\
+                hawaiian_pacific_islander_count = state_info["RACEHPI"][1],\
+                american_indian_alaska_native_obesity = state_info["RACENAA"][0],\
+                american_indian_alaska_native_count = state_info["RACENAA"][1],\
+                other_race_obesity = state_info["RACEOTH"][0],\
+                other_race_count = state_info["RACEOTH"][1],\
+                nonhispanic_white_obesity = state_info["RACEWHT"][0],\
+                nonhispanic_white_count = state_info["RACEWHT"][1],\
+                us_15_25_k_obesity = state_info["INC1525"][0],\
+                us_15_25_k_count = state_info["INC1525"][1],\
+                us_25_35_k_obesity = state_info["INC2535"][0],\
+                us_25_35_k_count = state_info["INC2535"][1],\
+                us_35_50_k_obesity = state_info["INC3550"][0],\
+                us_35_50_k_count = state_info["INC3550"][1],\
+                us_50_75_k_obesity = state_info["INC5075"][0],\
+                us_50_75_k_count = state_info["INC5075"][1],\
+                us_75_k_obesity = state_info["INC75PLUS"][0],\
+                us_75_k_count = state_info["INC75PLUS"][1],\
+                us_15_k_obesity = state_info["INCLESS15"][0],\
+                us_15_k_count = state_info["INCLESS15"][1],\
+                us_unreported_obesity = state_info["INCNR"][0],\
+                us_unreported_count = state_info["INCNR"][1],\
+                female_obesity = state_info["FEMALE"][0],\
+                female_count = state_info["FEMALE"][1],\
+                male_obesity = state_info["MALE"][0],\
+                male_count = state_info["MALE"][1],\
+                college_grad_obesity = state_info["EDUCOGRAD"][0],\
+                college_grad_count = state_info["EDUCOGRAD"][1],\
+                technical_partial_college_obesity = state_info["EDUCOTEC"][0],\
+                technical_partial_college_count = state_info["EDUCOTEC"][1],\
+                high_school_grad_obesity = state_info["EDUHSGRAD"][0],\
+                high_school_grad_count = state_info["EDUHSGRAD"][1],\
+                less_than_high_school_obesity = state_info["EDUHS"][0],\
+                less_than_high_school_count = state_info["EDUHS"][1],\
+                age_18_24_obesity = state_info["AGEYR1824"][0],\
+                age_18_24_count = state_info["AGEYR1824"][1],\
+                age_25_34_obesity = state_info["AGEYR2534"][0],\
+                age_25_34_count = state_info["AGEYR2534"][1],\
+                age_35_44_obesity = state_info["AGEYR3544"][0],\
+                age_35_44_count = state_info["AGEYR3544"][1],\
+                age_45_54_obesity = state_info["AGEYR4554"][0],\
+                age_45_54_count = state_info["AGEYR4554"][1],\
+                age_55_64_obesity = state_info["AGEYR5564"][0],\
+                age_55_64_count = state_info["AGEYR5564"][1],\
+                age_65_obesity = state_info["AGEYR65PLUS"][0],\
+                age_65_count = state_info["AGEYR65PLUS"][1]))
+            db.session.commit()
+    #Redirects to home page, index.html
     return redirect(location = url_for("home"), code=302)
 
 @app.route("/happinessData")
-def happinessData():
-    with open(os.path.join("db","happiness_and_politics.json"), "r") as infile:
-        return jsonify(load(infile))
-
-@app.route("/obesityScrape")
-def obesityGet():
-    # Gets json data at that url
-    obese_url = "https://chronicdata.cdc.gov/resource/mxg7-989n.json?$limit=2000&yearend=2017&question=Percent%20of%20adults%20aged%2018%20years%20and%20older%20who%20have%20obesity"
-    response = get(obese_url)
-    # Converts it to a dict
-    out_dict = loads(response.text)
-    # Saves it as a json file and redirects back to home page
-    # We use os to dynamically create file path
-    with open(os.path.join("db","obesity_and_stratifications.json"), "w") as outfile:
-        dump(out_dict, outfile)
-    return redirect(location = url_for("home"), code=302)
-
-@app.route("/obesityData")
-def obesityData():
-    with open(os.path.join("db","obesity_and_stratifications.json"), "r") as infile:
-        return jsonify(load(infile))
+@app.route("/happinessData/<state>")
+def happinessData(state="All"):
+    # Queries all records for one state or all states
+    if state == "All":
+        records = Info.query.join(Stratifications, Info.id==Stratifications.id).\
+            add_entity(Stratifications).\
+            filter(Info.id==Stratifications.id).all()
+    else:
+        records = Info.query.join(Stratifications, Info.id==Stratifications.id).\
+            add_entity(Stratifications).\
+            filter(Info.id==Stratifications.id).\
+            filter(Info.id==state).all()
+    # Creates a list of json objects, one for each state.
+    # If only one state is created, a list of size one is created.
+    # Removes a non-serializable SQLAlchemy object from the result dicts
+    jsonList = []
+    dout = {}
+    for document in records:
+        dout = {**document[0].__dict__,**document[1].__dict__}
+        dout.pop("_sa_instance_state")
+        jsonList.append(dout.copy())
+    return jsonify(jsonList)
 
 @app.route("/geoJSONData")
 def geoData():

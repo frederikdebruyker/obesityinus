@@ -50,15 +50,16 @@ var largestStatePolygon = {};
 // Reads in data, highlights each US state on the map
 d3.json("/geoJSONData").then(data => {
     data.features.forEach(d => {
+        // Gets the largest polygon to position the tooltips in.
         if (d.geometry.type === "MultiPolygon") {
             let lengths = d.geometry.coordinates.map(d => d[0].length);
             var index = lengths.indexOf(d3.max(lengths));
-            // var obj = {};
             largestStatePolygon[d.properties.NAME] = d.geometry.coordinates[index][0];
         }
         else {
             largestStatePolygon[d.properties.NAME] = d.geometry.coordinates[0];
         }
+
 
     });
     console.log(data.features);
