@@ -1,12 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <!-- bootstrap 4.3.1 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <!-- d3     -->
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <!-- override CSS -->
+    <link rel="stylesheet" href="../static/css/style.css">
 </head>
+
 <body>
-    HEY! Fred, this is for you.
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNavDropdown">
+                <ul class="navbar-nav align-self-end">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Menu
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="dropdown-item" href="map.html"><i class="wi wi-thermometer pr-2"></i>map</a>
+                                <a class="dropdown-item" href="agg.html"><i class="wi wi-thermometer pr-2"></i>aggregate</a>
+                                <a class="dropdown-item" href="definition.html"><i class="wi wi-humidity pr-2"></i>What is
+                                obesity</a>
+                            <a class="dropdown-item" href="contact.html"><i class="wi wi-cloudy pr-2"></i>Contact</a>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- title -->
+    <div class="title text-center">
+        <span class="text-wrapper text-info">
+            <span>Obesity in America</span>
+        </span>
+    </div>
+    <!-- subtitle -->
+    <div class="ml7 text-center">
+        <span class="text-wrapper">
+            <span class="letters text-danger">a Public Health Crisis</span>
+        </span>
+    </div>
+    <div class='row text-primary'>
+        <div class='col-sm-12 col-md col-lg ml-5'>
+            <a href='/map'>
+            <div class='h4'>Federal</div>
+            <div class='display-1'><b>45 %</b></div>
+        </a>
+        </div>
+        <div class='col-sm-12 col-md col-lg ml-5'>
+            <div class='h4 '>Highest</div>
+            <div class='display-3'><b>55 %</b></div>
+            <div class='h6'>Texas</div>
+        </div>
+        <div class='col-md col-lg ml-5'>
+            <div class='h4'>Lowest</div>
+            <div class='display-3'><b>23 %</b></div>
+            <div class='h6'>North Dakota</div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/2.0.2/anime.min.js"></script>
+    <script src="../static/js/index.js"></script>
 </body>
+
 </html>

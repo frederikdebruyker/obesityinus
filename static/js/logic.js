@@ -224,6 +224,7 @@ d3.json("/geoJSONData").then(data => {
     });
 });
 
+<<<<<<< HEAD
 
 function sorter(key, stateObjects, markerSpots,desc=true) {
     // Creates the array to be passed back to the layer group
@@ -247,3 +248,83 @@ function sorter(key, stateObjects, markerSpots,desc=true) {
     });
     return L.layerGroup(markers)
 }
+=======
+// Old stuff, it will be segmented and folded into the new stuff and then deleted
+// d3.json(geoURL).then( data => {
+//     // Orders the percent obesity in a separate array
+//     let fatOrder = data.features.map(d => d.properties.Obesity);
+//     fatOrder.sort((a,b)=>a-b);
+//     var percentObese = L.geoJson(data, {
+//         // Feature can be removed if we don't end up using it
+//         style: feature => {
+//             return {
+//                 color: "grey",
+//                 fillColor: "white",
+//                 fillOpacity: .8,
+//                 weight: 1.5
+//             };
+//         },
+
+//         onEachFeature: (feature, layer) => {
+//             layer.bindTooltip(feature.properties.Obesity.toString(), {
+//                 permanent: true,
+//                 direction: "center",
+//                 className: "ranking"});
+
+//             layer.on({
+//                 // Zooms to state when clicked
+//                 click: event => {
+//                     map.flyToBounds(event.target.getBounds());
+//                 },
+//                 // Resets to base when right clicked
+//                 contextmenu: ()=>{
+//                     map.flyTo(centerLatLon, startZoom);
+//                 }
+//             });
+//         }
+//     });
+
+//     var healthyRanking = L.geoJson(data, {
+//         // Feature can be removed if we don't end up using it
+//         style: feature => {
+//             return {
+//                 color: "grey",
+//                 fillColor: "white",
+//                 fillOpacity: .8,
+//                 weight: 1.5
+//             };
+//         },
+
+//         onEachFeature: (feature, layer) => {
+//             layer.bindTooltip((fatOrder.indexOf(feature.properties.Obesity)+1).toString(), {
+//                 permanent: true,
+//                 direction: "center",
+//                 className: "ranking"});
+
+//             layer.on({
+//                 // Zooms to state when clicked
+//                 click: event => {
+//                     map.flyToBounds(event.target.getBounds());
+//                 },
+//                 // Resets to base when right clicked
+//                 contextmenu: ()=>{
+//                     map.flyTo(centerLatLon, startZoom);
+//                 }
+//             });
+//         }
+//     }).addTo(map); 
+
+//     // Second Layer Group for the control
+//     var obesityInfo = {
+//         "Percent Obesity": percentObese,
+//         "Who's the Healthiest?": healthyRanking
+//     }
+    
+//     // Control for more baseLayers, has to be a second command so they
+//     // aren't treated as overlays
+//     L.control
+//     .layers(obesityInfo)
+//     .addTo(map);
+// });
+
+>>>>>>> 50d20052d857626c920dd67463becf463de722f6
