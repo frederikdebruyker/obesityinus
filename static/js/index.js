@@ -1,13 +1,32 @@
 // Reads in data, highlights each US state on the map
-d3.json("/geoJSONData").then(data => {
-    data.features.forEach(d => {
+var maxState = '';
+var maxPerc = 0;
+var minState = '';
+var minPerc = 100;
+var federalPerc = 0;
 
-        // console.log(d.properties.NAME);
-        // console.log(d.properties.obesity);
-        // console.log(d)
-    
+d3.json("/happinessData").then(data => {
+    data.forEach(d => {
+        if ( d.total_obesity > maxPerc ) {
+          maxState = d.abbr;
+          maxPerc = d.total_obesity;
+          console.log('max',maxState, maxPerc);
+
+        }
+        if ( d.total_obesity < minPerc ) {
+          minState = d.abbr;
+          minPerc = d.total_obesity;
+          console.log('min',minState, minPerc);
+        }
+        if ( d.abbr == 'US' ) {
+          federalPerc = d.total_obesity;
+          console.log('federal',federalPerc);
+        }
+        console.log(d.abbr);
     });
 });
+console.log('max',maxState, maxPerc);
+console.log('min',minState, minPerc);
 
 // Wrap every letter in a span
 $('.ml7 .letters').each(function(){

@@ -1,0 +1,88 @@
+nav {
+    background-color:#003366;
+}
+
+body {
+    background-color:#003366;
+}
+
+.title {
+    position: relative;
+    font-weight: 1000;
+    font-size: 4.0em;
+  }
+
+ .letters {
+    color: red;
+ }
+
+ .nav-link {
+     color:white
+ }
+
+.ml7 {
+    position: relative;
+    font-weight: 900;
+    font-size: 2.5em;
+  }
+  .ml7 .text-wrapper {
+    position: relative;
+    display: inline-block;
+    padding-top: 0.0em;
+    padding-right: 0.05em;
+    padding-bottom: 0.8em;
+    overflow: hidden;
+  }
+  .ml7 .letter {
+    transform-origin: 0 100%;
+    display: inline-block;
+    line-height: 1em;
+  }
+
+  .highlighttop .div{
+    font-size: 50px;
+    font: small; 
+    color: blue;
+  }
+
+  .topicTitle{
+      color:#30FF00;
+      font-size: 100px;
+      font-weight: bold;
+  }
+
+  .federalTitle{
+    color:white;
+    font-size:50px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  .federalPerc{
+    color:white;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-size:150px;
+  }
+
+  .stateTitle{
+    color:whitesmoke;
+    font-size:30px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;;
+    font-weight: bold;
+
+  }
+
+  .statePerc{
+    color:whitesmoke;
+    font-family: C;
+    font-size:90px;
+  }
+
+  .stateState{
+    color:whitesmoke;
+    font-size:30px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: bold;
+
+  }
