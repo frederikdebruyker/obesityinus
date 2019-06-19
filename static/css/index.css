@@ -20,6 +20,10 @@ body {
      color:white
  }
 
+ .state {
+    position: bottom;
+ }
+
 .ml7 {
     position: relative;
     font-weight: 900;
@@ -67,7 +71,7 @@ body {
 
   .stateTitle{
     color:whitesmoke;
-    font-size:30px;
+    font-size:25px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;;
     font-weight: bold;
 
@@ -76,12 +80,12 @@ body {
   .statePerc{
     color:whitesmoke;
     font-family: C;
-    font-size:90px;
+    font-size:80px;
   }
 
   .stateState{
     color:whitesmoke;
-    font-size:30px;
+    font-size:25px;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     font-weight: bold;
 
