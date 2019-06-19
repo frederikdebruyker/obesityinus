@@ -116,6 +116,10 @@ def home():
 def mapZoom():
     return render_template("map.html")
 
+@app.route("/stateInfo/<state>")
+def statePage(state):
+    return render_template("individual.html", state_in=state)
+
 @app.route("/happinessScrape")
 def happinessIndex():
     # Getting the happiness info
