@@ -124,8 +124,10 @@ def statePage(state):
 def happinessIndex():
     # Getting the happiness info
     # Opening the browser
-    executable_path = {'executable_path': 'chromedriver.exe'}
-    browser = Browser('chrome', **executable_path, headless=False)
+    # executable_path = {'executable_path': 'chromedriver.exe'}
+    # browser = Browser('chrome', **executable_path, headless=False)
+    # executable_path = {"executable_path": os.path("chromedriver.exe")}
+    browser = Browser("chrome")
     happy_url = "https://news.gallup.com/poll/125066/State-States.aspx"
     browser.visit(happy_url)
     # This brings up the data we want on the page, but waits until the website
