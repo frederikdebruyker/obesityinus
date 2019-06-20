@@ -16,10 +16,14 @@ body {
     color: red;
  }
 
- .nav-link {
+ a {
      color:white
  }
 
+ .navbar-toggler-icon {
+     color:white;
+ }
+ 
  .state {
     position: bottom;
  }
