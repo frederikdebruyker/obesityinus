@@ -116,16 +116,25 @@ def home():
 def mapZoom():
     return render_template("map.html")
 
+<<<<<<< HEAD
 @app.route("/agg")
 def obesityAgg():
     return render_template("agg.html")
     
+=======
+@app.route("/stateInfo/<state>")
+def statePage(state):
+    return render_template("individual.html", state_in=state)
+
+>>>>>>> 7a63fb4625199a09492b502500384e11cc6aa8ec
 @app.route("/happinessScrape")
 def happinessIndex():
     # Getting the happiness info
     # Opening the browser
-    executable_path = {'executable_path': 'chromedriver.exe'}
-    browser = Browser('chrome', **executable_path, headless=False)
+    # executable_path = {'executable_path': 'chromedriver.exe'}
+    # browser = Browser('chrome', **executable_path, headless=False)
+    # executable_path = {"executable_path": os.path("chromedriver.exe")}
+    browser = Browser("chrome")
     happy_url = "https://news.gallup.com/poll/125066/State-States.aspx"
     browser.visit(happy_url)
     # This brings up the data we want on the page, but waits until the website

@@ -1,5 +1,5 @@
 #map {
-    height: 1000px;
+    height: 400px;
 }
 
 .leaflet-tooltip.ranking {
@@ -22,6 +22,7 @@
     font-size: 1.5rem;
 }
 
+<<<<<<< HEAD
 .title {
     position: relative;
     font-weight: 1000;
@@ -55,3 +56,5 @@
     fill: steelblue
   }
   
+=======
+>>>>>>> 7a63fb4625199a09492b502500384e11cc6aa8ec
