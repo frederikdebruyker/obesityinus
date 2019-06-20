@@ -1,5 +1,13 @@
-#map {
-    height: 400px;
+body {
+    background-color: #003366;
+}
+
+h1 {
+    font-size: 4em;
+}
+
+.artist {
+    color: #30FF00;
 }
 
 .leaflet-tooltip.ranking {
@@ -10,15 +18,15 @@
     font-size: 1.5rem;
 }
 
-#map {
-    height: 1000px;
+.bar {
+    fill: red;
 }
 
-.leaflet-tooltip.ranking {
-    background-color: transparent;
-    border: transparent;
-    box-shadow: none;
-    color: black;
-    font-size: 1.5rem;
+.bar:hover {
+    fill: green;
+}
+
+#map {
+    height: 60vh;
 }
 

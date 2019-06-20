@@ -154,7 +154,7 @@ d3.json("/geoJSONData").then(data => {
                     zerone = "purple";
                 }
                 return {
-                    color: "teal",
+                    color: "white",
                     fillColor: zerone,
                     fillOpacity: .4,
                     weight: 1.5
@@ -200,7 +200,7 @@ d3.json("/geoJSONData").then(data => {
                     zerone = "black";
                 }
                 return {
-                    color: "teal",
+                    color: "white",
                     fillColor: zerone,
                     fillOpacity: .4,
                     weight: 1.5
