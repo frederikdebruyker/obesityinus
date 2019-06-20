@@ -163,7 +163,7 @@ d3.json("/happinessData", function(err, happinessData) {
     // .attr("fill", "black")
     // .attr("font-size", "7.5px")
     // .text(d => d.abbr)
-var textGroup = chartGroup.selectAll("text")
+var textGroup = chartGroup.selectAll("tolani")
     .data(happinessData)
     .enter()
     .append("text")
