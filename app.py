@@ -116,6 +116,10 @@ def home():
 def mapZoom():
     return render_template("map.html")
 
+@app.route("/agg")
+def obesityAgg():
+    return render_template("agg.html")
+    
 @app.route("/happinessScrape")
 def happinessIndex():
     # Getting the happiness info
