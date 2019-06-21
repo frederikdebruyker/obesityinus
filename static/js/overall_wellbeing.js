@@ -73,11 +73,19 @@ function renderText(textGroup, newXScale, chosenXaxis) {
 function updateToolTip(chosenXAxis, circlesGroup) {
 
   if (chosenXAxis === "overall_wellbeing") {
-    var label = "Overall Wellbeing:";
+    var label = "Overall Wellbeing";
   }
-  else {
+  else if (chosenXAxis === "produce"){
     var label = "Produce:";
   }
+  else if (chosenXAxis === "dairy_us_millions"){
+    var label = "Dairy_us_millions:";
+  }
+  else {
+    var label ="excercise";
+
+  };
+  
 
   var toolTip = d3.tip()
     .attr("class", "tooltip")
@@ -105,9 +113,15 @@ function updateToolTip(chosenXAxis, textGroup) {
     if (chosenXAxis === "overall_wellbeing") {
       var label = "Overall Wellbeing:";
     }
-    else {
+    else if (chosenXAxis === "produce"){
       var label = "Produce:";
     }
+    else if (chosenXAxis === "dairy_us_millions"){
+        var label = "Dairy_us_millions:";
+      }
+    else {
+        var label = "excercise:";
+      }
   
     var toolTip = d3.tip()
       .attr("class", "tooltip")
@@ -137,6 +151,8 @@ d3.json("/happinessData", function(err, happinessData) {
     data.overall_wellbeing = +data.overall_wellbeing;
     data.total_obesity = +data.total_obesity;
     data.produce = +data.produce;
+    data.excercise = +data.excercise;
+    data.dairy_us_millions = +data.dairy_us_millions;
   });
 
   // xLinearScale function above csv import
@@ -212,6 +228,18 @@ var textGroup = chartGroup.selectAll("tolani")
     .attr("value", "produce") // value to grab for event listener
     .classed("inactive", true)
     .text("Percent Produce (%)");
+    var excerciseLabel = labelsGroup.append("text")
+    .attr("x", 0)
+    .attr("y", 60)
+    .attr("value", "excercise") // value to grab for event listener
+    .classed("inactive", true)
+    .text("Percent Exercise (%)");
+    var dairyLabel = labelsGroup.append("text")
+    .attr("x", 0)
+    .attr("y", 80)
+    .attr("value", "dairy_us_millions") // value to grab for event listener
+    .classed("inactive", true)
+    .text("US Dairy, Millions");
 
   // append y axis
   chartGroup.append("text")
@@ -263,6 +291,34 @@ var textGroup = chartGroup.selectAll("tolani")
           wellbeingLabel
             .classed("active", false)
             .classed("inactive", true);
+          excerciseLabel
+            .classed("active", false)
+            .classed("inactive", true)
+        }
+        else if(chosenXAxis === "excercise"){
+            produceLabel
+            .classed("active", false)
+            .classed("inactive", true);
+          wellbeingLabel
+            .classed("active", false)
+            .classed("inactive", true);
+          excerciseLabel
+            .classed("active", true)
+            .classed("inactive", false)
+        }
+        else if(chosenXAxis === "dairy_us_millions"){
+            produceLabel
+            .classed("active", false)
+            .classed("inactive", true);
+          wellbeingLabel
+            .classed("active", false)
+            .classed("inactive", true);
+          excerciseLabel
+            .classed("active", false)
+            .classed("inactive", true)
+        dairyLabel
+            .classed("active", true)
+            .classed("inactive", false)
         }
         else {
           produceLabel
@@ -271,6 +327,12 @@ var textGroup = chartGroup.selectAll("tolani")
           wellbeingLabel
             .classed("active", true)
             .classed("inactive", false);
+         excerciseLabel
+            .classed("active", false)
+            .classed("inactive", true)
+        dairyLabel
+            .classed("active", false)
+            .classed("inactive", true)
         }
       }
     });
