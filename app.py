@@ -138,6 +138,10 @@ def obesityDoc():
 @app.route("/agric")
 def USagric():
     return render_template("agric.html")
+
+@app.route("/bar")
+def barPlot():
+    return render_template("bar.html")
     
 @app.route("/stateInfo/<state>")
 def statePage(state):
