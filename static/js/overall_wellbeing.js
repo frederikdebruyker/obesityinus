@@ -95,7 +95,7 @@ function updateToolTip(chosenXAxis, circlesGroup) {
 
   var toolTip = d3.tip()
     .attr("class", "tooltip")
-    .attr("fill", "white")
+    
     .offset([80, -60])
     .html(function(d) {
       return (`${d.abbr}<br>${label} ${d[chosenXAxis]}`);
@@ -220,7 +220,7 @@ var textGroup = chartGroup.selectAll("tolani")
     .append("text")
     .attr("x", d => xLinearScale(d[chosenXAxis]))
     .attr("y", d => yLinearScale(d.total_obesity))
-    .attr("fill", "black")
+    .attr("fill", "white")
     .attr("font-size", "12px")
     .attr("font-family",  "Calibri")
     .style("text-anchor", "middle")
