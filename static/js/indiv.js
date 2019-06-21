@@ -14,58 +14,66 @@ var chartMargin = {
 // Define dimensions of the chart area
 var chartWidth = svgWidth - chartMargin.left - chartMargin.right;
 var chartHeight = svgHeight - chartMargin.top - chartMargin.bottom;
-// Append svg and set dimensions
-var svg = d3.select(".container-fluid")
+
+// Groups the keys for each graph
+// Could've been done programatically with better naming convention
+var ageKeys = ["age_18_24_obesity","age_25_34_obesity","age_35_44_obesity","age_45_54_obesity","age_55_64_obesity","age_65_obesity"];
+var ageNames = ["18-24","25-34","35-44","45-54","55-64","65+"];
+
+var sexKeys = []
+
+createChartAndText(ageKeys,ageNames)   
+
+function createChartAndText(keys, names) {
+    // Creates list to hold values
+    var values = [];
+    // Append svg and set dimensions
+    var svg = d3.select(".container-fluid")
     .append("div")
     .classed("row",true)
     .append("svg")
     .attr("height", svgHeight)
     .attr("width", svgWidth);
-// Add location actual chart will be on
-var chartGroup = svg.append("g")
+    // Add location actual chart will be on
+    var chartGroup = svg.append("g")
     .attr("transform", `translate(${chartMargin.left}, ${chartMargin.top})`);
-d3.json(`/happinessData/${text}`).then(data => {
-    // Pulls it out of the list
-    data = data[0]
-    console.log(data)
-    // Groups the keys for each graph
-    // Could've been done programatically with better naming convention
-    // Write a function that handles not_significant data
-    var ageKeys = ["age_18_24_obesity","age_25_34_obesity","age_35_44_obesity","age_45_54_obesity","age_55_64_obesity","age_65_obesity"];
-    var ageNames = ["18-24","25-34","35-44","45-54","55-64","65+"];
-    var ageValues = [];
-    ageKeys.forEach(key=>ageValues.push(parseFloat(data[key])));
-    // Move all below to a function
-    // Creates Scales and axis
-    var xScale = d3.scaleBand()
-        .domain(ageNames)
-        .range([0,chartWidth])
-        .padding(.1);
+    d3.json(`/happinessData/${text}`).then(data => {
+        // Pulls it out of the list
+        data = data[0]
+        // Gets relevant values
+        keys.forEach(key=>values.push(parseFloat(data[key])));
+        // Move all below to a function
+        // Creates Scales and axis
+        var xScale = d3.scaleBand()
+            .domain(names)
+            .range([0,chartWidth])
+            .padding(.1);
 
-    var yScale = d3.scaleLinear()
-        .domain([d3.min(ageValues)-5,d3.max(ageValues)])
-        .range([chartHeight,0]);
+        var yScale = d3.scaleLinear()
+            .domain([d3.min(values)-5,d3.max(values)])
+            .range([chartHeight,0]);
 
-    var xAxis = d3.axisBottom(xScale);
-    var yAxis = d3.axisLeft(yScale);
+        var xAxis = d3.axisBottom(xScale);
+        var yAxis = d3.axisLeft(yScale);
 
-    // Append two SVG group elements to the chartGroup area,
-    // and create the bottom and left axes inside of them
-    chartGroup.append("g")
-    .call(yAxis);
+        // Append two SVG group elements to the chartGroup area,
+        // and create the bottom and left axes inside of them
+        chartGroup.append("g")
+        .call(yAxis);
 
-    chartGroup.append("g")
-    .attr("transform", `translate(0, ${chartHeight})`)
-    .call(xAxis);
+        chartGroup.append("g")
+        .attr("transform", `translate(0, ${chartHeight})`)
+        .call(xAxis);
 
-    // Create one SVG rectangle per piece of tvData
-    // Use the linear and band scales to position each rectangle within the chart
-    ageValues.forEach((point,index)=>{
-        chartGroup.append("rect")
-        .attr("class", "bar")
-        .attr("x", xScale(ageNames[index]))
-        .attr("y", yScale(point))
-        .attr("width", xScale.bandwidth())
-        .attr("height", (chartHeight - yScale(point)));
+        // Create one SVG rectangle per piece of tvData
+        // Use the linear and band scales to position each rectangle within the chart
+        values.forEach((point,index)=>{
+            chartGroup.append("rect")
+            .attr("class", "bar")
+            .attr("x", xScale(names[index]))
+            .attr("y", yScale(point))
+            .attr("width", xScale.bandwidth())
+            .attr("height", (chartHeight - yScale(point)));
+        });
     });
-});
+}
