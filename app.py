@@ -131,58 +131,62 @@ def happinessIndex():
     # executable_path = {'executable_path': 'chromedriver.exe'}
     # browser = Browser('chrome', **executable_path, headless=False)
     # executable_path = {"executable_path": os.path("chromedriver.exe")}
-    browser = Browser("chrome")
-    happy_url = "https://news.gallup.com/poll/125066/State-States.aspx"
-    browser.visit(happy_url)
-    # This brings up the data we want on the page, but waits until the website
-    # inserts the relevant data so it doesn't fail
-    # Times out every .5 seconds
-    browser.is_element_present_by_css(".dataTable",wait_time=2)
-    browser.find_by_id("dataTab").first.click()
-    # Gets the html of the page open, and reads it to a dataframe
-    # Can't just read html of url with read_table cause java inserts data after click
-    page_with_table = browser.html
-    pd_table = pd.read_html(page_with_table)[1]
-    #Closes browser
-    browser.quit()
-    # Manipulates dataframe and changes it to a dict
-    # The keys to dicts of info about each state are the states name
-    # There is also an average info accessed by "National average"
-    pd_table = pd_table.set_index("State")
-    out_dict = pd_table.to_dict("index")
-    # Sends data to the table, updating the old data in the table
-    # If the table doesn't exist yet, it creates the table data instead
-    # Proceeds only if the dictionary is valid - not yet, add check later
-    tester = db.session.query(Info).all()
-    if len(tester):
-        for document in tester:
-            # Sets dictionary key
-            key = document.id
-            if document.id == "National":
-                key = "National average"
-            # Updates the current entry with the new scraped info
-            document.republican = str(out_dict[key]['% Republican...'])
-            document.democrat = str(out_dict[key]['% Democrat/Lean'])
-            document.strongly_religious = str(out_dict[key]['% Very relig...'])
-            document.non_religious = str(out_dict[key]['% Nonreligious'])
-            document.produce = str(out_dict[key]['% Eat produc...'])
-            document.excercise = str(out_dict[key]['% Exercise f...'])
-            document.overall_wellbeing = str(out_dict[key]['Overall Well...'])
-            db.session.commit()
-    else:
-        for key in out_dict.keys():
-            id_out = key
-            if key == "National average":
-                id_out = "National"
-            db.session.add(Info(id = id_out,\
-                republican=str(out_dict[key]['% Republican...']),\
-                democrat=str(out_dict[key]['% Democrat/Lean']),\
-                strongly_religious=str(out_dict[key]['% Very relig...']),\
-                non_religious=str(out_dict[key]['% Nonreligious']),\
-                produce=str(out_dict[key]['% Eat produc...']),\
-                excercise=str(out_dict[key]['% Exercise f...']),\
-                overall_wellbeing=str(out_dict[key]['Overall Well...'])))
-            db.session.commit()
+    try:
+        browser = Browser("chrome")
+        happy_url = "https://news.gallup.com/poll/125066/State-States.aspx"
+        browser.visit(happy_url)
+        # This brings up the data we want on the page, but waits until the website
+        # inserts the relevant data so it doesn't fail
+        # Times out every .5 seconds
+        browser.is_element_present_by_css(".dataTable",wait_time=2)
+        browser.find_by_id("dataTab").first.click()
+        # Gets the html of the page open, and reads it to a dataframe
+        # Can't just read html of url with read_table cause java inserts data after click
+        page_with_table = browser.html
+        pd_table = pd.read_html(page_with_table)[1]
+        #Closes browser
+        browser.quit()
+        # Manipulates dataframe and changes it to a dict
+        # The keys to dicts of info about each state are the states name
+        # There is also an average info accessed by "National average"
+        pd_table = pd_table.set_index("State")
+        out_dict = pd_table.to_dict("index")
+        # Sends data to the table, updating the old data in the table
+        # If the table doesn't exist yet, it creates the table data instead
+        # Proceeds only if the dictionary is valid - not yet, add check later
+        tester = db.session.query(Info).all()
+        if len(tester):
+            for document in tester:
+                # Sets dictionary key
+                key = document.id
+                if document.id == "National":
+                    key = "National average"
+                # Updates the current entry with the new scraped info
+                document.republican = str(out_dict[key]['% Republican...'])
+                document.democrat = str(out_dict[key]['% Democrat/Lean'])
+                document.strongly_religious = str(out_dict[key]['% Very relig...'])
+                document.non_religious = str(out_dict[key]['% Nonreligious'])
+                document.produce = str(out_dict[key]['% Eat produc...'])
+                document.excercise = str(out_dict[key]['% Exercise f...'])
+                document.overall_wellbeing = str(out_dict[key]['Overall Well...'])
+                db.session.commit()
+        else:
+            for key in out_dict.keys():
+                id_out = key
+                if key == "National average":
+                    id_out = "National"
+                db.session.add(Info(id = id_out,\
+                    republican=str(out_dict[key]['% Republican...']),\
+                    democrat=str(out_dict[key]['% Democrat/Lean']),\
+                    strongly_religious=str(out_dict[key]['% Very relig...']),\
+                    non_religious=str(out_dict[key]['% Nonreligious']),\
+                    produce=str(out_dict[key]['% Eat produc...']),\
+                    excercise=str(out_dict[key]['% Exercise f...']),\
+                    overall_wellbeing=str(out_dict[key]['Overall Well...'])))
+                db.session.commit()
+    except:
+        # Doesn't attempt again
+        return redirect(location = url_for("home"), code=504)
 
     
     # Gets json data at the obese_url url for the stratification data

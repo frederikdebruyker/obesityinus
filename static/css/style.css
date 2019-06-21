@@ -1,5 +1,13 @@
-#map {
-    height: 400px;
+body {
+    background-color: #003366;
+}
+
+h1 {
+    font-size: 4em;
+}
+
+.artist {
+    color: #30FF00;
 }
 
 .leaflet-tooltip.ranking {
@@ -10,19 +18,18 @@
     font-size: 1.5rem;
 }
 
+.bar {
+    fill: steelblue;
+}
+
+.bar:hover {
+    fill: #30FF00;
+}
+
 #map {
-    height: 1000px;
+    height: 60vh;
 }
 
-.leaflet-tooltip.ranking {
-    background-color: transparent;
-    border: transparent;
-    box-shadow: none;
-    color: black;
-    font-size: 1.5rem;
-}
-
-<<<<<<< HEAD
 .title {
     position: relative;
     font-weight: 1000;
@@ -32,29 +39,26 @@
     position: relative;
     font-weight: 900;
     font-size: 1.3em;
-  }
-  .ml7 .text-wrapper {
-    position: relative;
-    display: inline-block;
-    padding-top: 0.0em;
-    padding-right: 0.05em;
-    padding-bottom: 0.8em;
-    overflow: hidden;
-  }
-  .ml7 .letter {
-    transform-origin: 0 100%;
-    display: inline-block;
-    line-height: 1em;
-  }
+}
+.ml7 .text-wrapper {
+position: relative;
+display: inline-block;
+padding-top: 0.0em;
+padding-right: 0.05em;
+padding-bottom: 0.8em;
+overflow: hidden;
+}
+.ml7 .letter {
+transform-origin: 0 100%;
+display: inline-block;
+line-height: 1em;
+}
 
-  .highlighttop .div{
-    font-size: 50px;
-    font: small; 
-    color: blue;
-  }
-  rect{
-    fill: steelblue
-  }
-  
-=======
->>>>>>> 7a63fb4625199a09492b502500384e11cc6aa8ec
+.highlighttop .div{
+font-size: 50px;
+font: small; 
+color: blue;
+}
+rect{
+fill: steelblue
+}
