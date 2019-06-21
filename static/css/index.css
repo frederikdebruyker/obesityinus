@@ -1,5 +1,5 @@
-nav {
-    background-color:#003366;
+button.nboverride {
+  color:white;
 }
 
 body {
@@ -17,12 +17,17 @@ body {
  }
 
  a {
-     color:white
+    color:white;
+    text-decoration: none;
  }
 
- .navbar-toggler-icon {
-     color:white;
+ a:hover {
+  text-decoration: none;
  }
+
+span.navbar-toggler-icon {
+  color:green;
+}
  
  .state {
     position: bottom;

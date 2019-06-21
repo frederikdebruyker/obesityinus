@@ -1,10 +1,10 @@
 var svgWidth = 960;
-var svgHeight = 1000;
+var svgHeight = 560;
 
 var margin = {
   top: 20,
   right: 40,
-  bottom: 80,
+  bottom: 300,
   left: 100
 };
 
@@ -81,6 +81,12 @@ function updateToolTip(chosenXAxis, circlesGroup) {
   else if (chosenXAxis === "dairy_us_millions"){
     var label = "dairy_us_millions:";
   }
+  else if (chosenXAxis === "agriculture_us_millions"){
+    var label = "agriculture_us_millions:";
+  }
+  else if (chosenXAxis === "animals_us_millions"){
+    var label = "animals_us_millions:";
+  }
   else {
     var label ="excercise";
 
@@ -89,6 +95,7 @@ function updateToolTip(chosenXAxis, circlesGroup) {
 
   var toolTip = d3.tip()
     .attr("class", "tooltip")
+    .attr("fill", "white")
     .offset([80, -60])
     .html(function(d) {
       return (`${d.abbr}<br>${label} ${d[chosenXAxis]}`);
@@ -118,6 +125,12 @@ function updateToolTip(chosenXAxis, textGroup) {
     }
     else if (chosenXAxis === "dairy_us_millions"){
         var label = "dairy_us_millions:";
+      }
+      else if (chosenXAxis === "agriculture_us_millions"){
+        var label = "agriculture_us_millions:";
+      }
+      else if (chosenXAxis === "animals_us_millions"){
+        var label = "animals_us_millions:";
       }
     else {
         var label = "excercise:";
@@ -153,6 +166,8 @@ d3.json("/happinessData", function(err, happinessData) {
     data.produce = +data.produce;
     data.excercise = +data.excercise;
     data.dairy_us_millions = +data.dairy_us_millions;
+    data.agriculture_us_millions = +data.agriculture_us_millions;
+    data.animals_us_millions = +data.animals_us_millions;
   });
 
   // xLinearScale function above csv import
@@ -187,8 +202,8 @@ d3.json("/happinessData", function(err, happinessData) {
     .append("circle")
     .attr("cx", d => xLinearScale(d[chosenXAxis]))
     .attr("cy", d => yLinearScale(d.total_obesity))
-    .attr("r", 10)
-    .attr("fill", "orange")
+    .attr("r", 15)
+    .attr("fill", " white")
     .attr("opacity", ".5");
 
 // append State abbreviation to the circlesGroup
@@ -206,7 +221,8 @@ var textGroup = chartGroup.selectAll("tolani")
     .attr("x", d => xLinearScale(d[chosenXAxis]))
     .attr("y", d => yLinearScale(d.total_obesity))
     .attr("fill", "black")
-    .attr("font-size", "7.5px")
+    .attr("font-size", "12px")
+    .attr("font-family",  "Calibri")
     .style("text-anchor", "middle")
     .text(d => d.abbr);
 
@@ -240,6 +256,19 @@ var textGroup = chartGroup.selectAll("tolani")
     .attr("value", "dairy_us_millions") // value to grab for event listener
     .classed("inactive", true)
     .text("US Dairy, Millions");
+    var agriculture_us_millionsLabel = labelsGroup.append("text")
+    .attr("x", 0)
+    .attr("y", 100)
+    .attr("value", "agriculture_us_millions") // value to grab for event listener
+    .classed("inactive", true)
+    .text("US Agriculture, Millions ");
+    var animals_us_millionsLabel = labelsGroup.append("text")
+    .attr("x", 0)
+    .attr("y", 120)
+    .attr("value", "animals_us_millions") // value to grab for event listener
+    .classed("inactive", true)
+    .text("US Animals, Millions");
+
 
   // append y axis
   chartGroup.append("text")
@@ -306,6 +335,17 @@ var textGroup = chartGroup.selectAll("tolani")
             .classed("active", true)
             .classed("inactive", false)
         }
+        else if(chosenXAxis === "agriculture_us_millions") {
+            agriculture_us_millionsLabel
+              .classed("active", true)
+              .classed("inactive", false);
+            dairyLabel
+              .classed("active", false)
+              .classed("inactive", true);
+            animals_us_millionsLabel
+              .classed("active", false)
+              .classed("inactive", true)
+          }
         else if(chosenXAxis === "dairy_us_millions"){
             produceLabel
             .classed("active", false)
@@ -319,6 +359,17 @@ var textGroup = chartGroup.selectAll("tolani")
         dairyLabel
             .classed("active", true)
             .classed("inactive", false)
+        }
+        else if(chosenXAxis === "animals_us_millions"){
+            agriculture_us_millionsLabel
+              .classed("active", false)
+              .classed("inactive", true);
+            dairyLabel
+              .classed("active", false)
+              .classed("inactive", true);
+            animals_us_millionsLabel
+              .classed("active", true)
+              .classed("inactive", false)
         }
         else {
           produceLabel

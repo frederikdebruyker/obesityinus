@@ -104,7 +104,14 @@ def create_compilation(dic):
     else:
         return (dic["stratificationid1"],["not_significant","not_significant"])
 
-
+def createSankeyInput(dic_in,obesity_keys,count_keys,names):
+    mults = []
+    outJSON = {"nodes":[{"node":0,"name":"Obesity"}],"links":[]}
+    for i in range(len(names)):
+        mults.append(float(dic_in[obesity_keys[i]])*float(dic_in[count_keys[i]])/100)
+        outJSON["nodes"].append({"node":(i+1),"name":names[i]})
+        outJSON["links"].append({"source":0,"target":(i+1),"value":mults[i]})
+    return outJSON
 
 
 # Setting up routes
@@ -116,6 +123,10 @@ def home():
 def mapZoom():
     return render_template("map.html")
 
+@app.route("/sankey")
+def sankeyGraph():
+    return render_template("sankey.html")
+
 @app.route("/agg")
 def obesityAgg():
     return render_template("agg.html")
@@ -123,6 +134,10 @@ def obesityAgg():
 @app.route("/agric")
 def USagric():
     return render_template("agric.html")
+
+@app.route("/bar")
+def barPlot():
+    return render_template("bar.html")
     
 @app.route("/stateInfo/<state>")
 def statePage(state):
@@ -399,5 +414,54 @@ def geoData():
     with open(os.path.join("db","gz_2010_us_040_00_500k.geojson"), "r") as infile:
         return jsonify(load(infile))
 
+
+
+@app.route("/sankey_files/<state>/<graphType>")
+def sankey_files(state, graphType):
+    records = Info.query.join(Stratifications, Info.id==Stratifications.id).\
+    add_entity(Stratifications).\
+    add_entity(Trade).\
+    filter(Info.id==Stratifications.id).\
+    filter(Info.id==Trade.id).\
+    filter(Info.id==state).all()
+    # Creates a list of json objects, one for each state.
+    # If only one state is created, a list of size one is created.
+    # Removes a non-serializable SQLAlchemy object from the result dicts
+
+    for age in records:
+        state_age = {**age[0].__dict__,**age[1].__dict__,**age[2].__dict__}
+        state_age.pop("_sa_instance_state")
+
+    age_obesity_keyword=['age_18_24_obesity', 'age_25_34_obesity','age_35_44_obesity','age_45_54_obesity','age_55_64_obesity','age_65_obesity']
+    age_obesity_name=["18-24", "25-34","35-44","45-54", "55-64", "65"]
+    age_count_keyword= ['age_18_24_count', 'age_25_34_count','age_35_44_count','age_45_54_count','age_55_64_count','age_65_count']
+    
+
+    ethnicity_count_keyword= ['american_indian_alaska_native_count','hawaiian_pacific_islander_count','hispanic_count','multi_racial_count','nonhispanic_black_count',"nonhispanic_white_count", 'asian_count']
+    ethnicity_obesity_keyword=['american_indian_alaska_native_obesity','hawaiian_pacific_islander_obesity','hispanic_obesity','multi_racial_obesity','nonhispanic_black_obesity', "nonhispanic_white_obesity",'asian_obesity']
+    ethnicity_obesity_name=["American Indian or Alaskan Native","Hawaiian or Pacific Islander","Hispanic","Multi-Racial","Non-Hispanic Black","Non-Hispanic White","Other"]
+
+    education_count_keyword= ['college_grad_count','high_school_grad_count','less_than_high_school_count','technical_partial_college_count']
+    education_obesity_keyword=['college_grad_obesity', 'high_school_grad_obesity','less_than_high_school_obesity','technical_partial_college_obesity']
+    education_obesity_name=["College Grad", "High School","Less than High School","Technical School or Partial College"]
+
+    gender_count_keyword = ['male_count', 'female_count']
+    gender_obesity_keyword = ['male_obesity', 'female_obesity']
+    gender_obesity_name = ["Male", "Female"]
+
+    Income_count_keyword= ['us_15_k_count','us_15_25_k_count', 'us_25_35_k_count','us_35_50_k_count','us_50_75_k_count','us_75_k_count']
+    Income_obesity_keyword=['us_15_k_obesity','us_15_25_k_obesity', 'us_25_35_k_obesity','us_35_50_k_obesity','us_50_75_k_obesity','us_75_k_obesity']
+    Income_obesity_name= ["Less than 15k","15k-25k","25k-35k","35k-50k","50k-75k","Greater than 75k"]
+     
+    switchCase={
+        "Age" : [age_count_keyword,age_obesity_keyword, age_obesity_name],
+        "Education":[education_count_keyword, education_obesity_keyword, education_obesity_name],
+        "Gender" :[gender_count_keyword, gender_obesity_keyword,gender_obesity_name],
+        "Income":[Income_count_keyword,Income_obesity_keyword,Income_obesity_name],
+        "Etinicity":[ethnicity_count_keyword, ethnicity_obesity_keyword,ethnicity_obesity_name]
+    }
+
+    return jsonify(createSankeyInput(state_age,switchCase[graphType][0],switchCase[graphType][1],switchCase[graphType][2]))
+   
 if __name__ == "__main__":
     app.run(debug=True)
