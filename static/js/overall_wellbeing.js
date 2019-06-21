@@ -13,15 +13,6 @@ var height = svgHeight - margin.top - margin.bottom;
 
 // Create an SVG wrapper, append an SVG group that will hold our chart,
 // and shift the latter by left and top margins.
-// var svg = d3.select("#scatter")
-//   .select(".chart")
-//   .append("svg")
-//   .attr("width", svgWidth)
-//   .attr("height", svgHeight);
-
-// // Append an SVG group
-// var chartGroup = svg.append("g")
-//   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 var svg = d3.select("#scatter")
   .append("svg")
@@ -107,7 +98,36 @@ function updateToolTip(chosenXAxis, circlesGroup) {
 
   return circlesGroup;
 }
+// function used for updating circles group with new tooltip
 
+function updateToolTip(chosenXAxis, textGroup) {
+
+    if (chosenXAxis === "overall_wellbeing") {
+      var label = "Overall Wellbeing:";
+    }
+    else {
+      var label = "Produce:";
+    }
+  
+    var toolTip = d3.tip()
+      .attr("class", "tooltip")
+      .offset([80, -60])
+      .html(function(d) {
+        return (`${d.abbr}<br>${label} ${d[chosenXAxis]}`);
+      });
+  
+    textGroup.call(toolTip);
+  
+    textGroup.on("mouseover", function(data) {
+      toolTip.show(data);
+    })
+      // onmouseout event
+      .on("mouseout", function(data, index) {
+        toolTip.hide(data);
+      });
+  
+    return textGroup;
+  }
 // Retrieve data from the CSV file and execute everything below
 d3.json("/happinessData", function(err, happinessData) {
     if (err) throw err;
@@ -163,7 +183,7 @@ d3.json("/happinessData", function(err, happinessData) {
     // .attr("fill", "black")
     // .attr("font-size", "7.5px")
     // .text(d => d.abbr)
-var textGroup = chartGroup.selectAll("text")
+var textGroup = chartGroup.selectAll("tolani")
     .data(happinessData)
     .enter()
     .append("text")
@@ -179,14 +199,14 @@ var textGroup = chartGroup.selectAll("text")
   var labelsGroup = chartGroup.append("g")
     .attr("transform", `translate(${width / 2}, ${height + 20})`);
 
-  var hairLengthLabel = labelsGroup.append("text")
+  var wellbeingLabel = labelsGroup.append("text")
     .attr("x", 0)
     .attr("y", 20)
     .attr("value", "overall_wellbeing") // value to grab for event listener
     .classed("active", true)
     .text("Overall Wellbeing (%)");
 
-  var albumsLabel = labelsGroup.append("text")
+  var produceLabel = labelsGroup.append("text")
     .attr("x", 0)
     .attr("y", 40)
     .attr("value", "produce") // value to grab for event listener
@@ -229,23 +249,26 @@ var textGroup = chartGroup.selectAll("text")
         // updates circles with new x values
         circlesGroup = renderCircles(circlesGroup, xLinearScale, chosenXAxis);
 
+        // updates Text with new x values
+        textGroup = renderText(textGroup, xLinearScale, chosenXAxis);
+
         // updates tooltips with new info
         circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
         textGroup = updateToolTip(chosenXAxis, textGroup);
         // changes classes to change bold text
         if (chosenXAxis === "produce") {
-          albumsLabel
+          produceLabel
             .classed("active", true)
             .classed("inactive", false);
-          hairLengthLabel
+          wellbeingLabel
             .classed("active", false)
             .classed("inactive", true);
         }
         else {
-          albumsLabel
+          produceLabel
             .classed("active", false)
             .classed("inactive", true);
-          hairLengthLabel
+          wellbeingLabel
             .classed("active", true)
             .classed("inactive", false);
         }
