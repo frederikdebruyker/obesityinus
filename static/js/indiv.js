@@ -20,11 +20,36 @@ var chartHeight = svgHeight - chartMargin.top - chartMargin.bottom;
 var ageKeys = ["age_18_24_obesity","age_25_34_obesity","age_35_44_obesity","age_45_54_obesity","age_55_64_obesity","age_65_obesity"];
 var ageNames = ["18-24","25-34","35-44","45-54","55-64","65+"];
 
-var sexKeys = []
+var sexKeys = ["female_obesity","male_obesity"];
+var sexNames = ["Female","Male"];
 
-createChartAndText(ageKeys,ageNames)   
+var incomeKeys = ["us_15_k_obesity","us_25_35_k_obesity","us_35_50_k_obesity","us_50_75_k_obesity","us_75_k_obesity"];
+var incomeNames = ["Less than 15k","15k-25k","25k-35k","35k-50k","50k-65k","Greater than 65k"];
 
-function createChartAndText(keys, names) {
+var raceKeys = ["american_indian_alaska_native_obesity","hawaiian_pacific_islander_obesity","hispanic_obesity","multi_racial_obesity","nonhispanic_black_obesity","nonhispanic_white_obesity","other_race_obesity"];
+var raceNames = ["American Indian or Alaskan Native","Hawaiian or Pacific Islander","Hispanic","Multi-Racial","Non-Hispanic Black","Non-Hispanic White","Other"];
+
+var educationKeys = ["college_grad_obesity","technical_partial_college_obesity","high_school_grad_obesity","less_than_high_school_obesity"];
+var educationNames = ["College Grad", "Technical School or Partial College","High School","Less than High School"];
+
+var exportKeys = ["agriculture_us_millions","animals_us_millions","dairy_us_millions"];
+var exportNames = ["Agriculture $M", "Animal Products $M", "Dairy $M"];
+
+var politicalKeys = ["democrat","republican"];
+var politicalNames = ["Democrat","Republican"];
+
+
+
+
+createChart(ageKeys,ageNames);
+createChart(sexKeys,sexNames);
+createChart(incomeKeys,incomeNames);
+createChart(raceKeys,raceNames);
+createChart(educationKeys,educationNames);
+createChart(exportKeys,exportNames);
+createChart(politicalKeys,politicalNames);
+
+function createChart(keys, names) {
     // Creates list to hold values
     var values = [];
     // Append svg and set dimensions
@@ -41,7 +66,14 @@ function createChartAndText(keys, names) {
         // Pulls it out of the list
         data = data[0]
         // Gets relevant values
-        keys.forEach(key=>values.push(parseFloat(data[key])));
+        keys.forEach(key=>{
+            if (data[key] != "not_significant") {
+                values.push(parseFloat(data[key]))
+            }
+            else {
+                values.push(0.0)
+            }
+        });
         // Move all below to a function
         // Creates Scales and axis
         var xScale = d3.scaleBand()
