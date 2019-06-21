@@ -1,5 +1,5 @@
 var margin = {top: 10, right: 10, bottom: 10, left: 10},
-    width = 500 - margin.left - margin.right,
+    width = 300 - margin.left - margin.right,
     height = 300 - margin.top - margin.bottom;
 var formatNumber = d3.format(",.0f"),
     format = function(d) { return formatNumber(d)},
