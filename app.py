@@ -119,6 +119,10 @@ def mapZoom():
 @app.route("/agg")
 def obesityAgg():
     return render_template("agg.html")
+
+@app.route("/agric")
+def USagric():
+    return render_template("agric.html")
     
 @app.route("/stateInfo/<state>")
 def statePage(state):
