@@ -43,60 +43,22 @@
 
 // // Render the plot to the div tag with id "plot"
 // Plotly.newPlot("plot", data, layout);
-function age(){
+
   
-  var age =[+data.age_18_24_count, +data.age_25_34_count, +data.age_35_44_count, +data.age_45_54_count , +data.age_55_64_count, +data.age_65_count ];
-  return age;
+  // var age =[+data.age_18_24_count, +data.age_25_34_count, +data.age_35_44_count, +data.age_45_54_count , +data.age_55_64_count, +data.age_65_count ];
+  // console.log(age);
  
-}
-console.log(age);   
 
 
 // import data
-d3.json("/happinessData/National", function(err, happinessData) {
+d3.json("chartFunc.json", function(err, happinessData) {
     if (err) throw err;
-// console.log(happinessData)
-  // parse data
-  
-
     happinessData.forEach(function(data) {
-    
-      data.age_18_24_count = + data.age_18_24_count;
-      data.age_25_34_count = +data.age_25_34_count;
-      data.age_35_44_count = +data.age_35_44_count;
-      data.age_45_54_count = +data.age_45_54_count;
-      data.age_55_64_count = +data.age_55_64_count;
-      data.age_65_count = +data.age_65_count;
-      data.age_18_24_obesity = +data.age_18_24_obesity;
-      data.age_25_34_obesity = +data.age_25_34_obesity;
-      data.age_35_44_obesity = +data.age_35_44_obesity;
-      data.age_45_54_obesity = +data.age_45_54_obesity;
-      data.age_55_64_obesity = +data.age_55_64_obesityt;
-      data.age_65_obesity = +data.age_65_obesity;
-      
-      // var age_18_24_count = data.age_18_24_count;
-      // var age_25_34_count = data.age_25_34_count;
-      // var age_35_44_count = data.age_35_44_count;
-      // var age_45_54_count = data.age_45_54_count;
-      // var age_55_64_count = data.age_55_64_count;
-      // var age_65_count = data.age_65_count;
-     
-      var trace =[
-        {
-          x: [ '18-24','25-34','35-44','45-54','55-64','65'],
-          y: [age],
-          type: 'bar'
-
-        }
-        
-      ];
-      
-
-
+      console.log(data) 
     });
     
   
-    console.log(data)
+  
+
 });
 
-// plotly.newPlot("barPlot",trace);
