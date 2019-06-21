@@ -86,15 +86,29 @@ d3.json("/geoJSONData").then(data => {
         // Creates an object of lat lng objects that have been converted
         // to an array and reversed, cause it's own lat longs are
         // used backwards by the marker function
+
+        // Experimental bounds, may or may not be updated
+        // var markerSpots = getCenter(largestStatePolygon);
         var markerSpots = {};
         Object.keys(largestStatePolygon).forEach(key => {
             // Gets the initial latlng object
             // Then converts it to an array and reverses it
-            markerSpots[key] = Object.values(
-                L.polygon(largestStatePolygon[key])
-                    .getBounds().getCenter()
-            ).reverse()
-            
+            if (key == "Idaho" || key == "Florida") {
+                markerSpots[key] = getCenter(largestStatePolygon,key)
+            }
+            else if (key == "Maryland") {
+                markerSpots[key] = Object.values(
+                    L.polygon(largestStatePolygon[key])
+                        .getBounds().getCenter()
+                ).reverse()
+                markerSpots[key][0] = markerSpots[key][0]+.5
+            }
+            else {
+                markerSpots[key] = Object.values(
+                    L.polygon(largestStatePolygon[key])
+                        .getBounds().getCenter()
+                ).reverse()
+            }
         });
 
         // Creates the layers to be added as a layer control
@@ -140,7 +154,7 @@ d3.json("/geoJSONData").then(data => {
                     zerone = "purple";
                 }
                 return {
-                    color: "teal",
+                    color: "white",
                     fillColor: zerone,
                     fillOpacity: .4,
                     weight: 1.5
@@ -186,7 +200,7 @@ d3.json("/geoJSONData").then(data => {
                     zerone = "black";
                 }
                 return {
-                    color: "teal",
+                    color: "white",
                     fillColor: zerone,
                     fillOpacity: .4,
                     weight: 1.5
@@ -224,8 +238,6 @@ d3.json("/geoJSONData").then(data => {
     });
 });
 
-<<<<<<< HEAD
-
 function sorter(key, stateObjects, markerSpots,desc=true) {
     // Creates the array to be passed back to the layer group
     var markers = [];
@@ -246,85 +258,30 @@ function sorter(key, stateObjects, markerSpots,desc=true) {
                 direction: "center",
                 className: "ranking"}));
     });
-    return L.layerGroup(markers)
+    return L.layerGroup(markers);
 }
-=======
-// Old stuff, it will be segmented and folded into the new stuff and then deleted
-// d3.json(geoURL).then( data => {
-//     // Orders the percent obesity in a separate array
-//     let fatOrder = data.features.map(d => d.properties.Obesity);
-//     fatOrder.sort((a,b)=>a-b);
-//     var percentObese = L.geoJson(data, {
-//         // Feature can be removed if we don't end up using it
-//         style: feature => {
-//             return {
-//                 color: "grey",
-//                 fillColor: "white",
-//                 fillOpacity: .8,
-//                 weight: 1.5
-//             };
-//         },
 
-//         onEachFeature: (feature, layer) => {
-//             layer.bindTooltip(feature.properties.Obesity.toString(), {
-//                 permanent: true,
-//                 direction: "center",
-//                 className: "ranking"});
-
-//             layer.on({
-//                 // Zooms to state when clicked
-//                 click: event => {
-//                     map.flyToBounds(event.target.getBounds());
-//                 },
-//                 // Resets to base when right clicked
-//                 contextmenu: ()=>{
-//                     map.flyTo(centerLatLon, startZoom);
-//                 }
-//             });
-//         }
-//     });
-
-//     var healthyRanking = L.geoJson(data, {
-//         // Feature can be removed if we don't end up using it
-//         style: feature => {
-//             return {
-//                 color: "grey",
-//                 fillColor: "white",
-//                 fillOpacity: .8,
-//                 weight: 1.5
-//             };
-//         },
-
-//         onEachFeature: (feature, layer) => {
-//             layer.bindTooltip((fatOrder.indexOf(feature.properties.Obesity)+1).toString(), {
-//                 permanent: true,
-//                 direction: "center",
-//                 className: "ranking"});
-
-//             layer.on({
-//                 // Zooms to state when clicked
-//                 click: event => {
-//                     map.flyToBounds(event.target.getBounds());
-//                 },
-//                 // Resets to base when right clicked
-//                 contextmenu: ()=>{
-//                     map.flyTo(centerLatLon, startZoom);
-//                 }
-//             });
-//         }
-//     }).addTo(map); 
-
-//     // Second Layer Group for the control
-//     var obesityInfo = {
-//         "Percent Obesity": percentObese,
-//         "Who's the Healthiest?": healthyRanking
-//     }
-    
-//     // Control for more baseLayers, has to be a second command so they
-//     // aren't treated as overlays
-//     L.control
-//     .layers(obesityInfo)
-//     .addTo(map);
-// });
-
->>>>>>> 50d20052d857626c920dd67463becf463de722f6
+// Maybe cut bands of the vertical middle 50% of the state
+//  and find middle of one with largest area?
+// This needs more work.
+// States with many on one side, the middle number is biased that direction
+// Currently returns for an individual state
+function getCenter(bigPolys,key) {
+    //Sorts a copy so as not to mess up a geojson
+    var sortedPoints = Object.assign([],bigPolys[key])
+    sortedPoints.sort((a,b) => {
+        return a[1]-b[1];
+    });
+    // Add if that returns warning if the poly is too small
+    var middle = Math.floor(sortedPoints.length/2);
+    var middleSide = sortedPoints[middle];
+    var middleGroup = sortedPoints.slice(middle-50,middle+50);
+    var compareList = middleGroup.map(d => Math.abs(d[0]-middleSide[0]));
+    var otherSide = middleGroup[compareList.indexOf(d3.max(compareList))];
+    // if (key=="South Dakota") {
+    //     console.log(middleSide);
+    //     console.log(otherSide);
+    //     console.log([(otherSide[1]+middleSide[1])/2,(otherSide[0]+middleSide[0])/2])
+    // }
+    return [(otherSide[1]+middleSide[1])/2,(otherSide[0]+middleSide[0])/2];
+}
