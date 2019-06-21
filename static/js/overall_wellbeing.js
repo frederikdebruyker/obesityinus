@@ -1,9 +1,9 @@
 var svgWidth = 960;
-var svgHeight = 560;
+var svgHeight = 640;
 
 var margin = {
   top: 20,
-  right: 40,
+  right: 60,
   bottom: 300,
   left: 100
 };
@@ -158,6 +158,7 @@ function updateToolTip(chosenXAxis, textGroup) {
 // Retrieve data from the CSV file and execute everything below
 d3.json("/happinessData", function(err, happinessData) {
     if (err) throw err;
+    happinessData = happinessData.filter(state => state.abbr != "US")
 
   // parse data
   happinessData.forEach(function(data) {
@@ -203,7 +204,7 @@ d3.json("/happinessData", function(err, happinessData) {
     .attr("cx", d => xLinearScale(d[chosenXAxis]))
     .attr("cy", d => yLinearScale(d.total_obesity))
     .attr("r", 15)
-    .attr("fill", " white")
+    .attr("fill", "#30FF00")
     .attr("opacity", ".5");
 
 // append State abbreviation to the circlesGroup
@@ -222,7 +223,7 @@ var textGroup = chartGroup.selectAll("tolani")
     .attr("y", d => yLinearScale(d.total_obesity))
     .attr("fill", "white")
     .attr("font-size", "12px")
-    .attr("font-family",  "Calibri")
+    // .attr("font-family",  "Calibri")
     .style("text-anchor", "middle")
     .text(d => d.abbr);
 
@@ -233,38 +234,38 @@ var textGroup = chartGroup.selectAll("tolani")
 
   var wellbeingLabel = labelsGroup.append("text")
     .attr("x", 0)
-    .attr("y", 20)
+    .attr("y", 30)
     .attr("value", "overall_wellbeing") // value to grab for event listener
     .classed("active", true)
     .text("Overall Wellbeing (%)");
 
   var produceLabel = labelsGroup.append("text")
     .attr("x", 0)
-    .attr("y", 40)
+    .attr("y", 50)
     .attr("value", "produce") // value to grab for event listener
     .classed("inactive", true)
     .text("Percent Produce (%)");
     var excerciseLabel = labelsGroup.append("text")
     .attr("x", 0)
-    .attr("y", 60)
+    .attr("y", 70)
     .attr("value", "excercise") // value to grab for event listener
     .classed("inactive", true)
     .text("Percent Exercise (%)");
     var dairyLabel = labelsGroup.append("text")
     .attr("x", 0)
-    .attr("y", 80)
+    .attr("y", 90)
     .attr("value", "dairy_us_millions") // value to grab for event listener
     .classed("inactive", true)
     .text("US Dairy, Millions");
     var agriculture_us_millionsLabel = labelsGroup.append("text")
     .attr("x", 0)
-    .attr("y", 100)
+    .attr("y", 110)
     .attr("value", "agriculture_us_millions") // value to grab for event listener
     .classed("inactive", true)
     .text("US Agriculture, Millions ");
     var animals_us_millionsLabel = labelsGroup.append("text")
     .attr("x", 0)
-    .attr("y", 120)
+    .attr("y", 130)
     .attr("value", "animals_us_millions") // value to grab for event listener
     .classed("inactive", true)
     .text("US Animals, Millions");
@@ -273,8 +274,8 @@ var textGroup = chartGroup.selectAll("tolani")
   // append y axis
   chartGroup.append("text")
     .attr("transform", "rotate(-90)")
-    .attr("y", 0 - margin.left)
-    .attr("x", 0 - (height / 2))
+    .attr("y", 30 - margin.left)
+    .attr("x", 0- (height / 2))
     .attr("dy", "1em")
     .classed("axis-text", true)
     .text("Percent Obesity (%)");
