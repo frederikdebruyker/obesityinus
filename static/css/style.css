@@ -62,3 +62,33 @@ color: blue;
 rect{
 fill: steelblue
 }
+
+.line {
+    fill: none;
+    stroke: steelblue;
+    stroke-width: 2px;
+  }
+  
+  g.x-axis >path {
+    stroke:white;
+  } 
+
+  g.tick>line{
+     stroke:white;
+    fill: white;
+    
+
+  }
+  g.tick{
+    stroke:white;
+   fill: white;
+   
+
+ }
+  g > path.domain{
+    stroke:white;
+  }  
+  g {
+      stroke: white;
+
+  }
