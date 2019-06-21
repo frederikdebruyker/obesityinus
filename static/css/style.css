@@ -19,11 +19,11 @@ h1 {
 }
 
 .bar {
-    fill: red;
+    fill: steelblue;
 }
 
 .bar:hover {
-    fill: green;
+    fill: #30FF00;
 }
 
 #map {
@@ -39,26 +39,26 @@ h1 {
     position: relative;
     font-weight: 900;
     font-size: 1.3em;
-  }
-  .ml7 .text-wrapper {
-    position: relative;
-    display: inline-block;
-    padding-top: 0.0em;
-    padding-right: 0.05em;
-    padding-bottom: 0.8em;
-    overflow: hidden;
-  }
-  .ml7 .letter {
-    transform-origin: 0 100%;
-    display: inline-block;
-    line-height: 1em;
-  }
+}
+.ml7 .text-wrapper {
+position: relative;
+display: inline-block;
+padding-top: 0.0em;
+padding-right: 0.05em;
+padding-bottom: 0.8em;
+overflow: hidden;
+}
+.ml7 .letter {
+transform-origin: 0 100%;
+display: inline-block;
+line-height: 1em;
+}
 
-  .highlighttop .div{
-    font-size: 50px;
-    font: small; 
-    color: blue;
-  }
-  rect{
-    fill: steelblue
-  }
+.highlighttop .div{
+font-size: 50px;
+font: small; 
+color: blue;
+}
+rect{
+fill: steelblue
+}
