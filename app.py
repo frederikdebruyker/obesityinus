@@ -385,5 +385,36 @@ def geoData():
     with open(os.path.join("db","gz_2010_us_040_00_500k.geojson"), "r") as infile:
         return jsonify(load(infile))
 
+
+@app.route("/sankey_files")
+def sankey():
+   test3= {
+       "nodes":[
+    {"name":"Obesity"},
+    {"name":"Income"},
+    {"name":"Liquid"},
+    {"name":"Losses"},
+    {"name":"Solid"},
+    {"name":"Gas"},
+    {"name":"Biofuel imports"},
+    {"name":"Biomass imports"},
+    {"name":"Coal imports"},
+    {"name":"Coal"}   
+    ],
+    "links":[
+    {"source":0,"target":1,"value":4},
+    {"source":0,"target":2,"value":2},
+    {"source":0,"target":3,"value":2},
+    {"source":0,"target":4,"value":2},
+    {"source":0,"target":5,"value":2},
+    {"source":0,"target":6,"value":2},
+    {"source":0,"target":7,"value":2},
+    {"source":0,"target":8,"value":2},
+    {"source":0,"target":9,"value":2},
+    {"source":0,"target":9,"value":2}
+    ]
+   }
+   return jsonify(test3)
+   
 if __name__ == "__main__":
     app.run(debug=True)
