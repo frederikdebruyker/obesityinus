@@ -6,8 +6,8 @@ var ageNames = ["18-24","25-34","35-44","45-54","55-64","65+"];
 var sexKeys = ["female_obesity","male_obesity"];
 var sexNames = ["Female","Male"];
 
-var incomeKeys = ["us_15_k_obesity","us_25_35_k_obesity","us_35_50_k_obesity","us_50_75_k_obesity","us_75_k_obesity"];
-var incomeNames = ["Less than 15k","15k-25k","25k-35k","35k-50k","50k-65k","Greater than 65k"];
+var incomeKeys = ["us_15_k_obesity","us_15_25_k_obesity","us_25_35_k_obesity","us_35_50_k_obesity","us_50_75_k_obesity","us_75_k_obesity"];
+var incomeNames = ["Less than 15k","15k-25k","25k-35k","35k-50k","50k-75k","Greater than 75k"];
 
 var raceKeys = ["american_indian_alaska_native_obesity","hawaiian_pacific_islander_obesity","hispanic_obesity","multi_racial_obesity","nonhispanic_black_obesity","nonhispanic_white_obesity","other_race_obesity"];
 var raceNames = ["American Indian or Alaskan Native","Hawaiian or Pacific Islander","Hispanic","Multi-Racial","Non-Hispanic Black","Non-Hispanic White","Other"];
@@ -39,6 +39,7 @@ function createChart(state, keys, names) {
         data = data[0]
         // Gets relevant values
         keys.forEach(key=>{
+            console.log(data[key])
             if (data[key] != "not_significant") {
                 values.push(parseFloat(data[key]))
             }
