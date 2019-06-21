@@ -34,13 +34,14 @@ d3.json("/geoJSONData").then(data => {
             largestStatePolygon[d.properties.NAME] = d.geometry.coordinates[0];
         }
     });
-    
     // Removes Puerto Rico, which is unused
     delete largestStatePolygon["Puerto Rico"];
     data.features = data.features.filter(feature => feature.properties.NAME != "Puerto Rico");
     // Deletes the referece to DC in largest as no marker will be placed there
     // However, the polygon in the data is still used
     delete largestStatePolygon["District of Columbia"];
+
+    console.log(largestStatePolygon)
 
     // Plots the geoJSON
     L.geoJson(data, {
@@ -81,8 +82,7 @@ d3.json("/geoJSONData").then(data => {
     // Lets people explore data themselves
     d3.json("/happinessData").then(allStates => {
         // Removes the dictionary for whole US as it won't be used
-        allStates = allStates.filter(a => a.id != "National")
-
+        allStates = allStates.filter(a => a.id != "National");
         // Creates an object of lat lng objects that have been converted
         // to an array and reversed, cause it's own lat longs are
         // used backwards by the marker function
@@ -93,7 +93,7 @@ d3.json("/geoJSONData").then(data => {
         Object.keys(largestStatePolygon).forEach(key => {
             // Gets the initial latlng object
             // Then converts it to an array and reverses it
-            if (key == "Idaho" || key == "Florida") {
+            if (key == "Idaho" || key == "Florida" || key == "Virginia") {
                 markerSpots[key] = getCenter(largestStatePolygon,key)
             }
             else if (key == "Maryland") {
