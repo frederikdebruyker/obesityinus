@@ -14,7 +14,7 @@ var height = svgHeight - margin.top - margin.bottom;
 // Create an SVG wrapper, append an SVG group that will hold our chart,
 // and shift the latter by left and top margins.
 
-var svg = d3.select("#scatter")
+var svg = d3.select("#scatteragric")
   .append("svg")
   .attr("width", svgWidth)
   .attr("height", svgHeight);
@@ -23,7 +23,7 @@ var chartGroup = svg.append("g")
   .attr("transform", `translate(${margin.left}, ${margin.top})`);
 
 // Initial Params
-var chosenXAxis = "overall_wellbeing";
+var chosenXAxis = "dairy_us_millions";
 
 // function used for updating x-scale var upon click on axis label
 function xScale(happinessData, chosenXAxis) {
@@ -72,17 +72,14 @@ function renderText(textGroup, newXScale, chosenXaxis) {
 // function used for updating circles group with new tooltip
 function updateToolTip(chosenXAxis, circlesGroup) {
 
-  if (chosenXAxis === "overall_wellbeing") {
-    var label = "Overall Wellbeing";
+  if (chosenXAxis === "dairy_us_millions") {
+    var label = "dairy_us_millions";
   }
-  else if (chosenXAxis === "produce"){
-    var label = "Produce:";
-  }
-  else if (chosenXAxis === "dairy_us_millions"){
-    var label = "dairy_us_millions:";
+  else if (chosenXAxis === "agriculture_us_millions"){
+    var label = "agriculture_us_millions:";
   }
   else {
-    var label ="excercise";
+    var label ="animals_us_millions";
 
   };
   
@@ -110,17 +107,14 @@ function updateToolTip(chosenXAxis, circlesGroup) {
 
 function updateToolTip(chosenXAxis, textGroup) {
 
-    if (chosenXAxis === "overall_wellbeing") {
-      var label = "Overall Wellbeing:";
+    if (chosenXAxis === "dairy_us_millions") {
+      var label = "dairy_us_millions:";
     }
-    else if (chosenXAxis === "produce"){
-      var label = "Produce:";
+    else if (chosenXAxis === "agriculture_us_millions"){
+      var label = "agriculture_us_millions:";
     }
-    else if (chosenXAxis === "dairy_us_millions"){
-        var label = "dairy_us_millions:";
-      }
     else {
-        var label = "excercise:";
+        var label = "animals_us_millions:";
       }
   
     var toolTip = d3.tip()
@@ -148,10 +142,10 @@ d3.json("/happinessData", function(err, happinessData) {
 
   // parse data
   happinessData.forEach(function(data) {
-    data.overall_wellbeing = +data.overall_wellbeing;
+    
     data.total_obesity = +data.total_obesity;
-    data.produce = +data.produce;
-    data.excercise = +data.excercise;
+    data.agriculture_us_millions = +data.agriculture_us_millions;
+    data.animals_us_millions = +data.animals_us_millions;
     data.dairy_us_millions = +data.dairy_us_millions;
   });
 
@@ -215,28 +209,21 @@ var textGroup = chartGroup.selectAll("tolani")
   var labelsGroup = chartGroup.append("g")
     .attr("transform", `translate(${width / 2}, ${height + 20})`);
 
-  var wellbeingLabel = labelsGroup.append("text")
-    .attr("x", 0)
-    .attr("y", 20)
-    .attr("value", "overall_wellbeing") // value to grab for event listener
-    .classed("active", true)
-    .text("Overall Wellbeing (%)");
-
-  var produceLabel = labelsGroup.append("text")
+    var agriculture_us_millionsLabel = labelsGroup.append("text")
     .attr("x", 0)
     .attr("y", 40)
-    .attr("value", "produce") // value to grab for event listener
+    .attr("value", "agriculture_us_millions") // value to grab for event listener
     .classed("inactive", true)
-    .text("Percent Produce (%)");
-    var excerciseLabel = labelsGroup.append("text")
+    .text("US Agriculture, Millions ");
+    var animals_us_millionsLabel = labelsGroup.append("text")
     .attr("x", 0)
     .attr("y", 60)
-    .attr("value", "excercise") // value to grab for event listener
+    .attr("value", "animals_us_millions") // value to grab for event listener
     .classed("inactive", true)
-    .text("Percent Exercise (%)");
+    .text("US Animals, Millions");
     var dairyLabel = labelsGroup.append("text")
     .attr("x", 0)
-    .attr("y", 80)
+    .attr("y", 20)
     .attr("value", "dairy_us_millions") // value to grab for event listener
     .classed("inactive", true)
     .text("US Dairy, Millions");
@@ -284,56 +271,41 @@ var textGroup = chartGroup.selectAll("tolani")
         circlesGroup = updateToolTip(chosenXAxis, circlesGroup);
         textGroup = updateToolTip(chosenXAxis, textGroup);
         // changes classes to change bold text
-        if (chosenXAxis === "produce") {
-          produceLabel
+        if (chosenXAxis === "agriculture_us_millions") {
+          agriculture_us_millionsLabel
             .classed("active", true)
             .classed("inactive", false);
-          wellbeingLabel
+          dairyLabel
             .classed("active", false)
             .classed("inactive", true);
-          excerciseLabel
+          animals_us_millionsLabel
             .classed("active", false)
             .classed("inactive", true)
         }
-        else if(chosenXAxis === "excercise"){
-            produceLabel
+        else if(chosenXAxis === "animals_us_millions"){
+          agriculture_us_millionsLabel
             .classed("active", false)
             .classed("inactive", true);
-          wellbeingLabel
+          dairyLabel
             .classed("active", false)
             .classed("inactive", true);
-          excerciseLabel
+          animals_us_millionsLabel
             .classed("active", true)
             .classed("inactive", false)
         }
         else if(chosenXAxis === "dairy_us_millions"){
-            produceLabel
+          agriculture_us_millionsLabel
             .classed("active", false)
             .classed("inactive", true);
-          wellbeingLabel
-            .classed("active", false)
-            .classed("inactive", true);
-          excerciseLabel
+          animals_us_millionsLabel
             .classed("active", false)
             .classed("inactive", true)
-        dairyLabel
+         dairyLabel
             .classed("active", true)
             .classed("inactive", false)
         }
-        else {
-          produceLabel
-            .classed("active", false)
-            .classed("inactive", true);
-          wellbeingLabel
-            .classed("active", true)
-            .classed("inactive", false);
-         excerciseLabel
-            .classed("active", false)
-            .classed("inactive", true)
-        dairyLabel
-            .classed("active", false)
-            .classed("inactive", true)
-        }
+        
+        
       }
     });
 });
