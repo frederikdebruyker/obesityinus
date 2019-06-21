@@ -131,6 +131,10 @@ def sankeyGraph():
 def obesityAgg():
     return render_template("agg.html")
 
+@app.route("/doc")
+def obesityDoc():
+    return render_template("doc.html")
+
 @app.route("/agric")
 def USagric():
     return render_template("agric.html")
