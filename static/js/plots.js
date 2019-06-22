@@ -2,7 +2,7 @@ svgWidth = 960;
 svgHeight = 640;
 
 var chartMargin = {
-  top: 20,
+  top: 70,
   right: 60,
   bottom: 300,
   left: 100,
@@ -196,8 +196,8 @@ d3.json("/happinessData", function(err, happinessData) {
           // append y axis
       chartGroup.append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 30 - margin.left)
-      .attr("x", 0- (height / 2))
+      .attr("y", 20 - margin.left)
+      .attr("x",  (height / 2)+20)
       .attr("dy", "1em")
       .classed("axis-text", true)
       .text("Percent Obesity (%)");
@@ -207,7 +207,7 @@ d3.json("/happinessData", function(err, happinessData) {
       .attr("x", 10)
       .attr("y", 10)
       .attr("fill", "white")
-      .attr("font-size", "1px")
+      .attr("font-size", "10px")
       .attr("class", "title")
       .text("Obesity vs Religion")
       
