@@ -189,15 +189,15 @@ d3.json("/happinessData", function(err, happinessData) {
       var religiousLabel = labelsGroup.append("text")
       .attr("x", 0)
       .attr("y", 30)
-      .attr("value", "overall_wellbeing") // value to grab for event listener
+      // .attr("value", "overall_wellbeing") // value to grab for event listener
       .classed("active", true)
       .text("Religion");
 
           // append y axis
       chartGroup.append("text")
       .attr("transform", "rotate(-90)")
-      .attr("y", 20 - margin.left)
-      .attr("x",  (height / 2)+20)
+      .attr("y", 30 - margin.left)
+      .attr("x",  0-(height / 2))
       .attr("dy", "1em")
       .classed("axis-text", true)
       .text("Percent Obesity (%)");
