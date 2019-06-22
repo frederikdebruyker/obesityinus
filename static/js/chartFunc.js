@@ -39,7 +39,6 @@ function createChart(state, keys, names) {
         data = data[0]
         // Gets relevant values
         keys.forEach(key=>{
-            console.log(data[key])
             if (data[key] != "not_significant") {
                 values.push(parseFloat(data[key]))
             }
@@ -48,7 +47,6 @@ function createChart(state, keys, names) {
             }
         });
         // Move all below to a function
-        // Creates Scales and axis
         var xScale = d3.scaleBand()
             .domain(names)
             .range([0,chartWidth])
@@ -70,7 +68,7 @@ function createChart(state, keys, names) {
         .attr("transform", `translate(0, ${chartHeight})`)
         .call(xAxis);
 
-        // Create one SVG rectangle per piece of tvData
+        // Create one SVG rectangle per piece of Data
         // Use the linear and band scales to position each rectangle within the chart
         values.forEach((point,index)=>{
             chartGroup.append("rect")
