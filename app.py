@@ -127,6 +127,10 @@ def mapZoom():
 def sankeyGraph():
     return render_template("sankey.html")
 
+@app.route("/sankeyalternate")
+def sankeyalternate():
+    return render_template("sankeyalternate.html")
+
 @app.route("/agg")
 def obesityAgg():
     return render_template("agg.html")
