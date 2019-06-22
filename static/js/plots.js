@@ -77,6 +77,38 @@ function createAggBar(names, values) {
       .attr("y", yScale(point))
       .attr("width", xScale.bandwidth())
       .attr("height", (chartHeight - yScale(point)));
+
+       // Create group for  2 x- axis labels
+       var labelsGroup = chartGroup.append("g")
+       .attr("transform", `translate(${width / 2}, ${height + 20})`);
+ 
+        labelsGroup.append("text")
+       .attr("x", 0)
+       .attr("y", 30)
+      //  .attr("value", "overall_wellbeing") // value to grab for event listener
+      //  .classed("active", true)
+       .text("Politics");
+ 
+           // append y axis
+       chartGroup.append("text")
+       .attr("transform", "rotate(-90)")
+       .attr("y", 30 - margin.left)
+       .attr("x", 0- (height / 2))
+       .attr("dy", "1em")
+       .classed("axis-text", true)
+       .text("Percent Obesity (%)");
+
+       svg.append("text")
+      .attr("transform", "translate(200,40)")
+      .attr("x", 10)
+      .attr("y", 10)
+      .attr("fill", "white")
+      .attr("font-size", "1px")
+      .attr("class", "title")
+      .text("Obesity vs Politics")
+      
+
+       
   });
 };
 
@@ -149,13 +181,43 @@ d3.json("/happinessData", function(err, happinessData) {
         .attr("width", xScale.bandwidth())
         .attr("height", (chartHeight - yScale(point)));
         
+    
+        // Create group for  2 x- axis labels
+      var labelsGroup = chartGroup.append("g")
+      .attr("transform", `translate(${width / 2}, ${height + 20})`);
+
+      var religiousLabel = labelsGroup.append("text")
+      .attr("x", 0)
+      .attr("y", 30)
+      .attr("value", "overall_wellbeing") // value to grab for event listener
+      .classed("active", true)
+      .text("Religion");
+
+          // append y axis
+      chartGroup.append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 30 - margin.left)
+      .attr("x", 0- (height / 2))
+      .attr("dy", "1em")
+      .classed("axis-text", true)
+      .text("Percent Obesity (%)");
+
+      svg.append("text")
+      .attr("transform", "translate(200,40)")
+      .attr("x", 10)
+      .attr("y", 10)
+      .attr("fill", "white")
+      .attr("font-size", "1px")
+      .attr("class", "title")
+      .text("Obesity vs Religion")
+      
     });
    
   };
               
-var stateCharts ="National";
-createChart(stateCharts,ageKeys,ageNames,true,"age");
-createChart(stateCharts,sexKeys,sexNames,false,"sex");
-createChart(stateCharts,incomeKeys,incomeNames,true,"income");
-createChart(stateCharts,raceKeys,raceNames,false,"race");
-createChart(stateCharts,educationKeys,educationNames,true,"education");
+// var stateCharts ="National";
+// createChart(stateCharts,ageKeys,ageNames,true,"age");
+// createChart(stateCharts,sexKeys,sexNames,false,"sex");
+// createChart(stateCharts,incomeKeys,incomeNames,true,"income");
+// createChart(stateCharts,raceKeys,raceNames,false,"race");
+// createChart(stateCharts,educationKeys,educationNames,true,"education");
