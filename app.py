@@ -135,9 +135,6 @@ def sankeyalternate():
 def obesityAgg():
     return render_template("agg.html")
 
-@app.route("/national")
-def obesityAgg():
-    return render_template("national.html")
 
 @app.route("/doc")
 def obesityDoc():
