@@ -1,42 +1,18 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8" />
-<title>Sankey Particles</title>
-<style>
-.node rect {
-  cursor: move;
-  fill-opacity: .9;
-  shape-rendering: crispEdges;
-}
-.node text {
-  pointer-events: none;
-  text-shadow: 0 1px 0 rgb(44, 197, 77);
-}
-.link {
-  fill: none;
-  stroke: rgb(209, 20, 20);
-  stroke-opacity: .05;
-}
-.link:hover {
-  stroke-opacity: .25;
-}
-svg {
-  position: absolute;
-}
-canvas {
-  position: absolute;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Sankey test</title>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-core.min.js"></script>
+    <script src="https://cdn.anychart.com/releases/v8/js/anychart-sankey.min.js"></script>
 </head>
 <body>
-<canvas width="1000" height="1000" ></canvas>
-<svg width="1000" height="1000" ></svg>
-<!-- <script src="testing3.js"></script> -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.16/d3.min.js" charset="utf-8" type="text/javascript"></script>
-<script src="/static/js/d3.sankey.js" charset="utf-8" type="text/javascript"></script>
-
-<script src= "/static/js/sankey.js" charset="utf-8" type="text/javascript"> </script>
+    <div class='' id='SankeyContainer'>
+    </div>
+    <!-- d3     -->
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <script src='/static/js/sankey.js'></script>
 </body>
 </html>
