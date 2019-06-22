@@ -128,14 +128,6 @@ def home():
 def mapZoom():
     return render_template("map.html")
 
-@app.route("/sankey/<state>/<graphType>")
-def sankeyGraph(state, graphType):
-    return render_template("sankey.html",state_in=state)
-
-@app.route("/sankeyalternate")
-def sankeyalternate():
-    return render_template("sankeyalternate.html")
-
 @app.route("/agg")
 def obesityAgg():
     return render_template("agg.html")

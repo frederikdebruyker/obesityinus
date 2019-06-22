@@ -7,7 +7,7 @@ var chartMargin = {
     top: 30,
     right: 30,
     bottom: 30,
-    left: 30
+    left: 40
 };
 // Define dimensions of the chart area
 var chartWidth = svgWidth - chartMargin.left - chartMargin.right;
@@ -35,20 +35,16 @@ var exportNames = ["Agriculture $M", "Animal Products $M", "Dairy $M"];
 var politicalKeys = ["democrat","republican"];
 var politicalNames = ["Democrat","Republican"];
 
-<<<<<<< HEAD
 var religiousKeys =["non_religious","strongly_religious"];
-var religiousNames= ["Non-Religious","Religious"]
+var religiousNames= ["Non-Religious","Religious"];
 
-function createChart(state, keys, names) {
-=======
-function createChart(state, keys, names, left=true) {
->>>>>>> 870ef51b19cb0ec0efc18c30c68b984e7c92d3b3
+function createChart(state, keys, names, left=true,extraClass) {
     // Creates list to hold values
     var values = [];
     // Append svg and set dimensions
     var rowDic = d3.select(".container-fluid")
     .append("div")
-    .classed("row",true)
+    .classed(`row ${extraClass}`,true)
     if (left) {
         var svg = rowDic.append("div")
         .classed("col-md-6",true)
@@ -100,6 +96,8 @@ function createChart(state, keys, names, left=true) {
         var xAxis = d3.axisBottom(xScale);
         var yAxis = d3.axisLeft(yScale);
 
+        // Add labels
+        // xAxis.append("text").text("HEYEYEYEYEYE")
         // Append two SVG group elements to the chartGroup area,
         // and create the bottom and left axes inside of them
         chartGroup.append("g")
@@ -107,7 +105,10 @@ function createChart(state, keys, names, left=true) {
 
         chartGroup.append("g")
         .attr("transform", `translate(0, ${chartHeight})`)
-        .call(xAxis);
+        .call(xAxis)
+        .selectAll("text")
+        .style("text-anchor","end")
+        .attr("transform","rotate(-15)");
 
         // Create one SVG rectangle per piece of Data
         // Use the linear and band scales to position each rectangle within the chart
