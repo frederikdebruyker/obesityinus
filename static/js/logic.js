@@ -127,10 +127,6 @@ d3.json("/geoJSONData").then(data => {
         // Adding the Healthiness layer to map.
         rankingLayer["Healthiness"].addTo(map);
 
-        // Creates the variable that will be used to make everything binary colors
-        // Also creates outline path variables
-        var zerone;
-        var individual;
         // Creates a geojson level for Democratic vs Republican
         var demreb = L.geoJson(data, {
             // Styles background appearance of the outline

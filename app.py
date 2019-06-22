@@ -132,7 +132,6 @@ def mapZoom():
 def obesityAgg():
     return render_template("agg.html")
 
-
 @app.route("/doc")
 def obesityDoc():
     return render_template("doc.html")
@@ -464,7 +463,7 @@ def sankey_files(state, graphType):
         "Education":[education_count_keyword, education_obesity_keyword, education_obesity_name],
         "Gender" :[gender_count_keyword, gender_obesity_keyword,gender_obesity_name],
         "Income":[Income_count_keyword,Income_obesity_keyword,Income_obesity_name],
-        "Etinicity":[ethnicity_count_keyword, ethnicity_obesity_keyword,ethnicity_obesity_name]
+        "Ethnicity":[ethnicity_count_keyword, ethnicity_obesity_keyword,ethnicity_obesity_name]
     }
 
     return jsonify(createSankeyInput(state_age,switchCase[graphType][0],switchCase[graphType][1],switchCase[graphType][2]))
