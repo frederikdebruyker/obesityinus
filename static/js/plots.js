@@ -35,7 +35,9 @@ function createAggBar(names, values) {
   // Append svg and set dimensions
   var svg = d3.select(".container-fluid")
   .append("div")
-  .classed("col-lg-7 col-md-12",true)
+  .classed("row",true)
+  .append('div')
+  .classed("col-lg-6 col-md-12",true)
   .append("svg")
   .attr("height", svgHeight)
   .attr("width", svgWidth);
@@ -99,7 +101,9 @@ function createRegBar(names, values) {
   // Append svg and set dimensions
   var svg = d3.select(".container-fluid")
   .append("div")
-  .classed("col-lg-7 col-md-12",true)
+  .classed("row",true)
+  .append('div')
+  .classed("col-lg-6 col-md-12",true)
   .append("svg")
   .attr("height", svgHeight)
   .attr("width", svgWidth);

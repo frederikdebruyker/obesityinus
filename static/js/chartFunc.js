@@ -1,3 +1,17 @@
+// Gets data to make graphs
+// Creates chart size
+// Width is also constrained by Bootstrap
+svgWidth = Math.round(window.innerWidth*.5);
+svgHeight = Math.round(window.innerHeight*.3);
+var chartMargin = {
+    top: 30,
+    right: 30,
+    bottom: 30,
+    left: 30
+};
+// Define dimensions of the chart area
+var chartWidth = svgWidth - chartMargin.left - chartMargin.right;
+var chartHeight = svgHeight - chartMargin.top - chartMargin.bottom;
 // Groups the keys for each graph
 // Could've been done programatically with better naming convention
 var ageKeys = ["age_18_24_obesity","age_25_34_obesity","age_35_44_obesity","age_45_54_obesity","age_55_64_obesity","age_65_obesity"];
@@ -21,20 +35,44 @@ var exportNames = ["Agriculture $M", "Animal Products $M", "Dairy $M"];
 var politicalKeys = ["democrat","republican"];
 var politicalNames = ["Democrat","Republican"];
 
+<<<<<<< HEAD
 var religiousKeys =["non_religious","strongly_religious"];
 var religiousNames= ["Non-Religious","Religious"]
 
 function createChart(state, keys, names) {
+=======
+function createChart(state, keys, names, left=true) {
+>>>>>>> 870ef51b19cb0ec0efc18c30c68b984e7c92d3b3
     // Creates list to hold values
     var values = [];
     // Append svg and set dimensions
-    var svg = d3.select(".container-fluid")
+    var rowDic = d3.select(".container-fluid")
     .append("div")
     .classed("row",true)
-    .append("svg")
-    .attr("height", svgHeight)
-    .attr("width", svgWidth);
-    // Add location actual chart will be on
+    if (left) {
+        var svg = rowDic.append("div")
+        .classed("col-md-6",true)
+        .append("svg")
+        .attr("height", svgHeight)
+        .attr("width", svgWidth);
+        var text = rowDic.append("div")
+        .classed("col-md-6 my-auto",true)
+        .append("p")
+        .classed("text-center",true)
+        .text("THIS IS A TEST< I DON'T KNOW WHY I AM YELLING! WORDS WORDS FSDNJ FSNAJ  SAFNJASD FSNO AFSANJO  SDANJOD DSNJIDSAN  DSODSNOJ SDNJIOADS DSANOJ ASOSOADS DSNAOS DSANO DSADSNOA");
+    } else {
+        var text = rowDic.append("div")
+        .classed("col-md-6 my-auto",true)
+        .append("p")
+        .classed("text-center",true)
+        .text("THIS IS A TEST< I DON'T KNOW WHY I AM YELLING! WORDS WORDS FSDNJ FSNAJ  SAFNJASD FSNO AFSANJO  SDANJOD DSNJIDSAN  DSODSNOJ SDNJIOADS DSANOJ ASOSOADS DSNAOS DSANO DSADSNOA");
+        var svg = rowDic.append("div")
+        .classed("col-md-6",true)
+        .append("svg")
+        .attr("height", svgHeight)
+        .attr("width", svgWidth);
+    }
+        // Add location actual chart will be on
     var chartGroup = svg.append("g")
     .attr("transform", `translate(${chartMargin.left}, ${chartMargin.top})`);
     d3.json(`/happinessData/${state}`).then(data => {
