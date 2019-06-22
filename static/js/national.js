@@ -1,6 +1,6 @@
 var stateCharts ="National";
-createChart(stateCharts,ageKeys,ageNames);
-createChart(stateCharts,sexKeys,sexNames,false);
-createChart(stateCharts,incomeKeys,incomeNames);
-createChart(stateCharts,raceKeys,raceNames,false);
-createChart(stateCharts,educationKeys,educationNames);
+createChart(stateCharts,ageKeys,ageNames,true,"age");
+createChart(stateCharts,sexKeys,sexNames,false,"sex");
+createChart(stateCharts,incomeKeys,incomeNames,true,"income");
+createChart(stateCharts,raceKeys,raceNames,false,"race");
+createChart(stateCharts,educationKeys,educationNames,true,"education");

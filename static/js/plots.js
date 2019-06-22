@@ -153,9 +153,9 @@ d3.json("/happinessData", function(err, happinessData) {
    
   };
               
-  var stateCharts ="National";
-createChart(stateCharts,ageKeys,ageNames);
-createChart(stateCharts,sexKeys,sexNames,false);
-createChart(stateCharts,incomeKeys,incomeNames);
-createChart(stateCharts,raceKeys,raceNames,false);
-createChart(stateCharts,educationKeys,educationNames);
+var stateCharts ="National";
+createChart(stateCharts,ageKeys,ageNames,true,"age");
+createChart(stateCharts,sexKeys,sexNames,false,"sex");
+createChart(stateCharts,incomeKeys,incomeNames,true,"income");
+createChart(stateCharts,raceKeys,raceNames,false,"race");
+createChart(stateCharts,educationKeys,educationNames,true,"education");
