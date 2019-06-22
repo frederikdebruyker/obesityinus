@@ -21,6 +21,9 @@ var exportNames = ["Agriculture $M", "Animal Products $M", "Dairy $M"];
 var politicalKeys = ["democrat","republican"];
 var politicalNames = ["Democrat","Republican"];
 
+var religiousKeys =["non_religious","strongly_religious"];
+var religiousNames= ["Non-Religious","Religious"]
+
 function createChart(state, keys, names) {
     // Creates list to hold values
     var values = [];
