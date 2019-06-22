@@ -6,8 +6,8 @@ svgHeight = Math.round(window.innerHeight*.3);
 var chartMargin = {
     top: 30,
     right: 30,
-    bottom: 30,
-    left: 40
+    bottom: 70,
+    left: 90
 };
 // Define dimensions of the chart area
 var chartWidth = svgWidth - chartMargin.left - chartMargin.right;
@@ -23,14 +23,14 @@ var sexNames = ["Female","Male"];
 var incomeKeys = ["us_15_k_obesity","us_15_25_k_obesity","us_25_35_k_obesity","us_35_50_k_obesity","us_50_75_k_obesity","us_75_k_obesity"];
 var incomeNames = ["Less than 15k","15k-25k","25k-35k","35k-50k","50k-75k","Greater than 75k"];
 
-var raceKeys = ["american_indian_alaska_native_obesity","hawaiian_pacific_islander_obesity","hispanic_obesity","multi_racial_obesity","nonhispanic_black_obesity","nonhispanic_white_obesity","other_race_obesity"];
-var raceNames = ["American Indian or Alaskan Native","Hawaiian or Pacific Islander","Hispanic","Multi-Racial","Non-Hispanic Black","Non-Hispanic White","Other"];
+var raceKeys = ["hispanic_obesity","american_indian_alaska_native_obesity","hawaiian_pacific_islander_obesity","multi_racial_obesity","nonhispanic_black_obesity","nonhispanic_white_obesity","other_race_obesity"];
+var raceNames = ["Hispanic","American Indian or Alaskan Native","Hawaiian or Pacific Islander","Multi-Racial","Non-Hispanic Black","Non-Hispanic White","Other"];
 
 var educationKeys = ["college_grad_obesity","technical_partial_college_obesity","high_school_grad_obesity","less_than_high_school_obesity"];
 var educationNames = ["College Grad", "Technical School or Partial College","High School","Less than High School"];
 
 var exportKeys = ["agriculture_us_millions","animals_us_millions","dairy_us_millions"];
-var exportNames = ["Agriculture $M", "Animal Products $M", "Dairy $M"];
+var exportNames = ["Agriculture", "Animal Products", "Dairy"];
 
 var politicalKeys = ["democrat","republican"];
 var politicalNames = ["Democrat","Republican"];
@@ -39,6 +39,24 @@ var religiousKeys =["non_religious","strongly_religious"];
 var religiousNames= ["Non-Religious","Religious"];
 
 function createChart(state, keys, names, left=true,extraClass) {
+    var switchDic = {
+        "age_18_24_obesity":["Age (Years)","% Obesity",
+            "Obesity typically rises with age until your late 50s and decreases significantly once you reach half a decade past 60."],
+        "female_obesity":["Gender","% Obesity",
+            "Obesity is usually almost equal between the genders queried here, with men being slightly higher."],
+        "us_15_k_obesity":["Income","% Obesity",
+            "The percentage of people who are overweight by bracket typically decreases the more those people make."],
+        "hispanic_obesity":["Ethnicity/Race","% Obesity",
+            "American Indians or Alaskan Natives and Non-Hispanic Blacks have the highest odds of being obese, and Other is often the lowest. Hispanic, Hawaiian or Pacific Islanders, and Multi-Racial people are between the two and are usually somewhat equal. Non-Hispanic White is also usually slightly less than those three but slightly more than Other."],
+        "college_grad_obesity":["Education Level","% Obesity",
+            "The percentage of people who are overweight by bracket usually increases the lower your level of education."],
+        "agriculture_us_millions":["Exports","Amount in US Millions",
+            "This chart displays how much of various food products that the state produces and exports."],
+        "democrat":["Political Alignment","% Pop in Alignment",
+            "This chart displays the exact percentages of the population of the state that align with the Democrats or the Republicans."],
+        "non_religious":["Religiosity","% Pop in Alignment",
+            "This chart displays the exact percentages of the population that are religious or non-religious in alignment."]
+    };
     // Creates list to hold values
     var values = [];
     // Append svg and set dimensions
@@ -51,24 +69,24 @@ function createChart(state, keys, names, left=true,extraClass) {
         .append("svg")
         .attr("height", svgHeight)
         .attr("width", svgWidth);
-        var text = rowDic.append("div")
+        var descriptor = rowDic.append("div")
         .classed("col-md-6 my-auto",true)
         .append("p")
         .classed("text-center",true)
-        .text("THIS IS A TEST< I DON'T KNOW WHY I AM YELLING! WORDS WORDS FSDNJ FSNAJ  SAFNJASD FSNO AFSANJO  SDANJOD DSNJIDSAN  DSODSNOJ SDNJIOADS DSANOJ ASOSOADS DSNAOS DSANO DSADSNOA");
     } else {
-        var text = rowDic.append("div")
+        var descriptor = rowDic.append("div")
         .classed("col-md-6 my-auto",true)
         .append("p")
         .classed("text-center",true)
-        .text("THIS IS A TEST< I DON'T KNOW WHY I AM YELLING! WORDS WORDS FSDNJ FSNAJ  SAFNJASD FSNO AFSANJO  SDANJOD DSNJIDSAN  DSODSNOJ SDNJIOADS DSANOJ ASOSOADS DSNAOS DSANO DSADSNOA");
         var svg = rowDic.append("div")
         .classed("col-md-6",true)
         .append("svg")
         .attr("height", svgHeight)
         .attr("width", svgWidth);
     }
-        // Add location actual chart will be on
+    // Adds text descriptors of charts and trends.
+    descriptor.text(switchDic[keys[0]][2]);
+    // Add location actual chart will be on
     var chartGroup = svg.append("g")
     .attr("transform", `translate(${chartMargin.left}, ${chartMargin.top})`);
     d3.json(`/happinessData/${state}`).then(data => {
@@ -97,7 +115,18 @@ function createChart(state, keys, names, left=true,extraClass) {
         var yAxis = d3.axisLeft(yScale);
 
         // Add labels
-        // xAxis.append("text").text("HEYEYEYEYEYE")
+        chartGroup.append("g").append("text")
+            .attr("x",Math.round(svgWidth/2)-60)
+            .attr("y",svgHeight-40)
+            .style("text-anchor","middle")
+            .text(switchDic[keys[0]][0]);
+
+        chartGroup.append("g").append("text")
+            .attr("x",-100)
+            .attr("y",-40)
+            .attr("transform","rotate(-90)")
+            .style("text-anchor","middle")
+            .text(switchDic[keys[0]][1]);
         // Append two SVG group elements to the chartGroup area,
         // and create the bottom and left axes inside of them
         chartGroup.append("g")

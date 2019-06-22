@@ -11,9 +11,22 @@ h1 {
     font-weight: bold;
     color:#30FF00;
 }
-
+h6 {
+    font-size: 1.5em;
+    font-weight: bold;
+    color:#30FF00;
+}
 .artist {
     color: #30FF00;
+}
+
+hr {
+    border-color: #30FF00;
+    background-color: #30FF00;
+}
+hr.bottom {
+    border-color: whitesmoke;
+    background-color: whitesmoke;
 }
 
 .leaflet-tooltip.ranking {
