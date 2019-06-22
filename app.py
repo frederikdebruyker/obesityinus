@@ -106,11 +106,16 @@ def create_compilation(dic):
 
 def createSankeyInput(dic_in,obesity_keys,count_keys,names):
     mults = []
-    outJSON = {"nodes":[{"node":0,"name":"Obesity"}],"links":[]}
+    outJSON = []
+    
     for i in range(len(names)):
+    #      if i = "not_significant"
+              
+    #        else {
+    #            values.push(0.0)
         mults.append(float(dic_in[obesity_keys[i]])*float(dic_in[count_keys[i]])/100)
-        outJSON["nodes"].append({"node":(i+1),"name":names[i]})
-        outJSON["links"].append({"source":0,"target":(i+1),"value":mults[i]})
+        # outJSON["nodes"].append({"node":(i+1),"name":names[i]})
+        outJSON.append({"from":"Obesity","to":names[i],"weight":mults[i]})
     return outJSON
 
 
@@ -123,17 +128,10 @@ def home():
 def mapZoom():
     return render_template("map.html")
 
-@app.route("/sankey")
-def sankeyGraph():
-    return render_template("sankey.html")
-
-@app.route("/sankeyalternate")
-def sankeyalternate():
-    return render_template("sankeyalternate.html")
-
 @app.route("/agg")
 def obesityAgg():
     return render_template("agg.html")
+
 
 @app.route("/doc")
 def obesityDoc():
