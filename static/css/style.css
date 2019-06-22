@@ -2,6 +2,10 @@ body {
     background-color: #003366;
 }
 
+p {
+    color: white;
+}
+
 h1 {
     font-size: 4em;
     font-weight: bold;
