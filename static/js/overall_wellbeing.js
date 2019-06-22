@@ -158,7 +158,7 @@ function updateToolTip(chosenXAxis, textGroup) {
 // Retrieve data from the CSV file and execute everything below
 d3.json("/happinessData", function(err, happinessData) {
     if (err) throw err;
-    happinessData = happinessData.filter(state => state.abbr != "US")
+    happinessData =happinessData.filter(state => state.abbr != "US")
 
   // parse data
   happinessData.forEach(function(data) {

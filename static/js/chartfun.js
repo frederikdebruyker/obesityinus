@@ -16,7 +16,7 @@ var chartHeight = svgHeight - chartMargin.top - chartMargin.bottom;
 // Could've been done programatically with better naming convention
 var ageKeys = ["age_18_24_obesity","age_25_34_obesity","age_35_44_obesity","age_45_54_obesity","age_55_64_obesity","age_65_obesity"];
 var ageNames = ["18-24","25-34","35-44","45-54","55-64","65+"];
-
+var title=["Age Group","Gender","Income","Race","Educatio"]
 var sexKeys = ["female_obesity","male_obesity"];
 var sexNames = ["Female","Male"];
 
@@ -38,7 +38,7 @@ var educationNames = ["College Grad", "Technical School or Partial College","Hig
 // var religiousKeys =["non_religious","strongly_religious"];
 // var religiousNames= ["Non-Religious","Religious"];
 
-function createChart(state, keys, names, left=true,extraClass) {
+function createChart(state, keys, names, left=true,extraClass,title) {
     // Creates list to hold values
     var values = [];
     // Append svg and set dimensions
@@ -120,6 +120,24 @@ function createChart(state, keys, names, left=true,extraClass) {
             .attr("y", yScale(point))
             .attr("width", xScale.bandwidth())
             .attr("height", (chartHeight - yScale(point)));
-        });
+
+            chartGroup.append("text")
+            .attr("transform", "rotate(-90)")
+            .attr("y", 30 - margin.left)
+            .attr("x", 0- (height / 2))
+            .attr("dy", "1em")
+            .classed("axis-text", true)
+            .text("Percent Obesity (%)");
+
+            var labelsGroup = chartGroup.append("g")
+            .attr("transform", `translate(${width / 2}, ${height + 20})`);
+ 
+                labelsGroup.append("text")
+            .attr("x", 0)
+            .attr("y", 40)
+            //  .attr("value", "overall_wellbeing") // value to grab for event listener
+            //  .classed("active", true)
+            .text(`${names}`);
+                });
     });
 }
