@@ -1,8 +1,8 @@
-var svgWidth = 960;
-var svgHeight = 640;
+svgWidth =960;
+svgHeight = 640;
 
 var margin = {
-  top: 20,
+  top: 90,
   right: 60,
   bottom: 300,
   left: 100
@@ -279,6 +279,15 @@ var textGroup = chartGroup.selectAll("tolani")
     .attr("dy", "1em")
     .classed("axis-text", true)
     .text("Percent Obesity (%)");
+
+    svg.append("text")
+    .attr("transform", "translate(200,40)")
+    .attr("x", 10)
+    .attr("y", 10)
+    .attr("fill", "white")
+    .attr("font-size", "10px")
+    .attr("class", "title")
+    .text("Aggregrate Charts")
 
   // updateToolTip function above csv import
   var circlesGroup= updateToolTip(chosenXAxis, circlesGroup);
