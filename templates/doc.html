@@ -52,11 +52,33 @@
         <!-- all yours Ben -->
         <h1>Obesity in the US</h1>
         <h2>A brief articulation</h2>
+        <h2>See below for documentation of the api.</h2>
         <p>Obesity is a grave public health threat, more serious even than the opioid epidemic. It is linked to chronic
             diseases including type 2 diabetes, hyperlipidemia, high blood pressure, cardiovascular disease, and cancer.
             Obesity accounts for 18 percent of deaths among Americans ages 40 to 85. (David Blumenthal, 2018)
             A detailed analysis of obesity on state and federal level versus a multitude of factors (income / education
             / race / etc_.</p>
+        <h2>API Endpoints</h2>
+        <ul>/happinessData/{state}<br>
+            <p>This will return an array of objects, with each object the aggregation of all data available about a state. <br>
+                {state} can be any valid state name from the 50 states, or "National", which returns the average data of all the states.
+            </p>
+        </ul>
+        <ul>/geoJSONData<br>
+            <p>This returns a geoJSON of the states plus DC and Puerto Rico.</p>
+        </ul>
+        <ul>/sankey_files/{state}/{graphType} <br>
+            <p>This returns the base json object needed for a Sankey Diagram. <br>
+                {state} has the same constraints as state for the happinessData endpoint. <br>
+                {graphType} can be Age, Education, Gender, Income, or Ethnicity.
+            </p>
+        </ul>
+        <ul>/happinessScrape
+            <p>This will update or create the database of all the info that goes into the creation of the website. <br>
+                It is recommended to only run this path if the database needs to be created or recreated if it was corrupted. <br>
+                The data does not update often, and updates are likely unecessary.
+            </p>
+        </ul>
         <h2>Links to our data sets </h2>
         <ul>http://eric.clst.org/tech/usgeojson/ (Bureau, n.d.)</ul>
         <ul>https://chronicdata.cdc.gov/Nutrition-Physical-Activity-and-Obesity/Nutrition-Physical-Activity-and-Obesity-Behavioral/hn4x-zwk7
