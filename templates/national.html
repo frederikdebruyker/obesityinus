@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Project 2 : Obesity</title>
+
+    <!-- bootstrap 4.3.1 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
+
+    <!-- D3 javascript -->
+    <!-- <script src="https://d3js.org/d3.v5.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.7.1/d3-tip.min.js"></script>
+    <!-- Our CSS -->
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-dark navbar-expand-lg">
+        <button class="navbar-toggler nboverride" type="button" data-toggle="collapse" data-target="#navbarToggleroia">
+            <span class="navbar-toggler-icon bg-light "></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarToggleroia">
+            <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/map">Rankings Map</a>
+                </li>
+                <li class="nav-item  active">
+                    <a class="nav-link" href="/agg">Aggregation</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/doc">Documentation</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- <div class ="Short Summary">
+            The association between obesity and income or educational level is complex and differs by sex and race/ethnicity.
+            Overall, men and women with college degrees had lower obesity prevalence compared with those with less education.
+            By race/ethnicity, the same obesity and education pattern was seen among non-Hispanic white, non-Hispanic black, and Hispanic women, and also among non-Hispanic white men, although the differences were not all statistically significant. Although the difference was not statistically significant among non-Hispanic black men, obesity prevalence increased with educational attainment. Among non-Hispanic Asian women and men and Hispanic men there were no differences in obesity prevalence by education level.
+            Among men, obesity prevalence was lower in the lowest and highest income groups compared with the middle income group. This pattern was seen among non-Hispanic white and Hispanic men. Obesity prevalence was higher in the highest income group than in the lowest income group among non-Hispanic black men.
+            Among women, obesity prevalence was lower in the highest income group than in the middle and lowest income groups. This pattern was observed among non-Hispanic white, non-Hispanic Asian, and Hispanic women. Among non-Hispanic black women, there was no difference in obesity prevalence by income.
+
+    </div> -->
+
+
+    <div id="scatter"></div>
+
+
+
+
+    <!-- API Key -->
+    <script type="text/javascript" src="../static/js/config.js"></script>
+    <!-- Our JS -->
+    <script type="text/javascript" src="../static/js/chartFunc.js"></script>
+    <script type="text/javascript" src="../static/js/national.js"></script>
+    
+    <!-- <script type="text/javascript" src="../static/js/bar.js"></script> -->
+    <!-- <script type="text/javascript" src="../static/js/agg.js"></script> -->
+</body>
+
+</html>
