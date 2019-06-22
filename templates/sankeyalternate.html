@@ -11,10 +11,20 @@
 </head>
 
 <body>
-    <div class='' id='SankeyContainer'>
+    <div class="container-fluid">
+        <div class="row p-4 bg-light">
+            <!--Normally these medium columns go 8/4 wide on small screen sizes-->
+            <div class="col-sm col-mdcol-lg m-2 p-4">
+                <h2 class="text-info">Summary: Lattitude vs. <i class="wi wi-thermometer pr-2"></i><i
+                        class="wi wi-humidity pr-2"></i><i class="wi wi-cloudy pr-2"></i><i
+                        class="wi wi-windy pr-2"></i></h2>
+            </div>
+            <div class='col-sm col-mdcol-lg' id='SankeyContainer'>
 
+            </div>
+        </div>
     </div>
-    <!-- https://hackernoon.com/create-javascript-sankey-diagram-b68c0d508a38 -->
+
     <script src='../static/js/sankeyalternate.js'></script>
 </body>
 
