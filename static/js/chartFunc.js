@@ -73,11 +73,13 @@ function createChart(state, keys, names, left=true,extraClass) {
         .classed("col-md-6 my-auto",true)
         .append("p")
         .classed("text-center describing",true)
+        .style("font-size","1.5rem");
     } else {
         var descriptor = rowDic.append("div")
         .classed("col-md-6 my-auto",true)
         .append("p")
         .classed("text-center describing",true)
+        .style("font-size","1.5rem");
         var svg = rowDic.append("div")
         .classed("col-md-6",true)
         .append("svg")
